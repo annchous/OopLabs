@@ -7,4 +7,4 @@
 [Tasks conditions for labs.](https://www.notion.so/c67f6f2a1c684c45a4d23b1fee57ac1b)
 
 ### Solutions
-* [Lab 1: INI file parser]()
+* [Lab 1: INI file parser](https://github.com/annchous/OopLabs/tree/master/IniParser)

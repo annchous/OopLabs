@@ -14,3 +14,6 @@ Parameter values can be of one of the following types:
 * integer
 * real
 * string: no spaces, but unlike the parameter name may contain dots (.)
+
+
+![Scheme](https://github.com/annchous/OopLabs/blob/master/Tasks/inipscheme.png)

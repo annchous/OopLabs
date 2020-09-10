@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\annchous\\source\\repos\\IniParser\\IniParser\\IniParser.csproj",
+      "projectUniqueName": "C:\\Users\\annchous\\source\\repos\\OopLabs\\IniParser\\IniParser.csproj",
       "projectName": "IniParser",
-      "projectPath": "C:\\Users\\annchous\\source\\repos\\IniParser\\IniParser\\IniParser.csproj",
+      "projectPath": "C:\\Users\\annchous\\source\\repos\\OopLabs\\IniParser\\IniParser.csproj",
       "packagesPath": "C:\\Users\\annchous\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\annchous\\source\\repos\\IniParser\\IniParser\\obj\\",
+      "outputPath": "C:\\Users\\annchous\\source\\repos\\OopLabs\\IniParser\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\annchous\\AppData\\Roaming\\NuGet\\NuGet.Config",

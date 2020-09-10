@@ -17,5 +17,7 @@ Parameter values can be of one of the following types:
 * real
 * string: no spaces, but unlike the parameter name may contain dots (.)
 
+// TO BE CONTINUED
+
 
 ![Scheme](https://github.com/annchous/OopLabs/blob/master/Tasks/inipscheme.png)

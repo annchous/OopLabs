@@ -7,12 +7,10 @@ namespace IniParser
     class Parser
     {
         public IniFile iniFile;
-        public Dictionary<Section, Property> Values;
 
         public Parser(string path)
         {
             iniFile = new IniFile(path);
-            Values = new Dictionary<Section, Property>();
         }
 
         public string ParseSectionName(string name) => name.Substring(1, name.Length - 2);
@@ -24,5 +22,14 @@ namespace IniParser
         public int GetCommentStartIndex(string property) => property.IndexOf(';');
         public int GetPropertyValueLength(string property) => 
             GetCommentStartIndex(property) - GetEqualSignIndex(property) - 1;
+
+        public Property ParsePropertyLine(string propertyLine)
+        {
+            string key = ParsePropertyKey(propertyLine);
+            object value = ParsePropertyValue(propertyLine);
+            return new Property(key, value);
+        }
+
+        public Section ParseSectionLine(string sectionLine) => new Section(ParseSectionName(sectionLine));
     }
 }

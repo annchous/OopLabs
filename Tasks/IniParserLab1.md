@@ -1,7 +1,7 @@
 ## INI Parser
 ### Laboratory work №1
 
-### [Solution](https://github.com/annchous/OopLabs/tree/master/IniParser)
+### [Solution](https://github.com/annchous/OopLabs/tree/master/OopLabs/IniParser)
 
 The task is to create a tool for processing the configuration INI file.
 > *An **INI file** is a configuration file for computer software that consists of a text-based content with a structure and syntax comprising key-value pairs for **properties**, and **sections** that organize the properties.*

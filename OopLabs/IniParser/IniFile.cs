@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using IniParser.IniParserException;
+using System.IO;
 
 namespace IniParser
 {
@@ -9,13 +10,15 @@ namespace IniParser
     {
         public string Name { get; }
         public string Path { get; }
-        public IniFile(string name, string path)
+        public List<string> data;
+        public IniFile(string path)
         {
-            Name = name;
+            Name = System.IO.Path.GetFileName(path);
             Path = path;
+            data = new List<string>();
         }
 
-        public bool CheckFormat() => GetFormat().Equals("ini");
+        public bool RightFormat() => GetFormat().Equals("ini");
         public string GetFormat() => Name.Substring(Name.IndexOf('.') + 1);
     }
 }

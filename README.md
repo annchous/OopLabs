@@ -10,4 +10,4 @@
 * [Lab 1: INI file parser](https://github.com/annchous/OopLabs/blob/master/Tasks/IniParserLab1.md)
 
 ### Solutions
-* [Lab 1: INI file parser](https://github.com/annchous/OopLabs/tree/master/IniParser)
+* [Lab 1: INI file parser](https://github.com/annchous/OopLabs/tree/master/OopLabs/IniParser)

@@ -47,5 +47,12 @@ namespace IniParser
                 : base(message)
             { }
         }
+
+        public class WrongParameterValueType : Exception
+        {
+            public WrongParameterValueType(string message)
+                : base(message)
+            { }
+        }
     }
 }

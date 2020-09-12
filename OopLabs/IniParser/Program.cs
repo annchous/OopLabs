@@ -9,11 +9,17 @@ namespace IniParser
     {
         static void Main(string[] args)
         {
-            //IniParser parser = new IniParser("lab1.ini");
-            //parser.ReadData();
-            Parser p = new Parser();
-            var x = p.ParsePropertyLine("hello = 1.a");
-            Console.WriteLine(x.Value.GetType());
+            IniParser parser = new IniParser("lab1.ini");
+            var data = parser.Parse();
+
+            foreach (var key in data.Data.Keys)
+            {
+                Console.WriteLine(key.Name);
+                foreach (var value in data.Data[key])
+                {
+                    Console.WriteLine(value.Name + " " + value.Value + " " + value.Value.GetType());
+                }
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace IniParser
     class Parser
     {
         public IniFile IniFile;
-        private IFormatProvider _formatter;
+        private readonly IFormatProvider _formatter;
 
         public Parser()
         {
@@ -68,5 +68,10 @@ namespace IniParser
         public bool IsProperty(string line) => line.Contains('=') && line.IndexOf('=') == line.LastIndexOf('=');
         public bool ExistsPropertyKey(string line) => !String.IsNullOrEmpty(ParsePropertyKey(line));
         public bool HasComment(string line) => line.Contains(';');
+        public bool CommentOnlyLine(string line) => line.Trim().StartsWith(';');
+        public bool EmptyLine(string line) => String.IsNullOrEmpty(line);
+
+        public bool LineToIgnore(string line) =>
+            CommentOnlyLine(line) || EmptyLine(line) || (!IsSection(line) && !IsProperty(line));
     }
 }

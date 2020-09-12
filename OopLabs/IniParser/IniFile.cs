@@ -19,7 +19,7 @@ namespace IniParser
         }
 
         public bool RightFormat() => GetFormat().Equals("ini");
-        public string GetFormat() => Name.Substring(Name.IndexOf('.') + 1);
+        public string GetFormat() => Name.Substring(Name.LastIndexOf('.') + 1);
 
         public void ReadData()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -10,11 +11,9 @@ namespace IniParser
         {
             //IniParser parser = new IniParser("lab1.ini");
             //parser.ReadData();
-            IniParser parser = new IniParser();
-            parser.ParseSection("[COMMON]");
-            parser.ParseProperty("hello = 1.5", "COMMON");
-            var x = parser.Data.Data.Last().Value.Last();
-            Console.WriteLine(x.Value);
+            Parser p = new Parser();
+            var x = p.ParsePropertyLine("hello = 1.a");
+            Console.WriteLine(x.Value.GetType());
         }
     }
 }

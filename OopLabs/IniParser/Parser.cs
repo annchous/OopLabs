@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using IniParser.IniParserException;
 
@@ -8,11 +9,16 @@ namespace IniParser
     class Parser
     {
         public IniFile IniFile;
+        private IFormatProvider _formatter;
 
-        public Parser() {}
+        public Parser()
+        {
+            _formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+        }
         public Parser(string path)
         {
             IniFile = new IniFile(path);
+            _formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
         }
 
         public string ParseSectionName(string name)
@@ -44,8 +50,17 @@ namespace IniParser
             if (!ExistsPropertyKey(propertyLine))
                 throw new PropertyKeyNotFound("Property key was not found! Invalid property!");
             string key = ParsePropertyKey(propertyLine);
-            object value = ParsePropertyValue(propertyLine);
+            object value = TryParse(ParsePropertyValue(propertyLine));
             return new Property(key, value);
+        }
+
+        public object TryParse(string propertyValue)
+        {
+            if (Int32.TryParse(propertyValue, NumberStyles.Integer, _formatter, out int intResult))
+                return intResult;
+            if (Double.TryParse(propertyValue, NumberStyles.Float, _formatter, out double doubleResult))
+                return doubleResult;
+            return propertyValue;
         }
 
         public Section ParseSectionLine(string sectionLine) => new Section(ParseSectionName(sectionLine));

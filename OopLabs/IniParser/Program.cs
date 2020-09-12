@@ -12,14 +12,9 @@ namespace IniParser
             IniParser parser = new IniParser("lab1.ini");
             var data = parser.Parse();
 
-            foreach (var key in data.Data.Keys)
-            {
-                Console.WriteLine(key.Name);
-                foreach (var value in data.Data[key])
-                {
-                    Console.WriteLine(value.Name + " " + value.Value + " " + value.Value.GetType());
-                }
-            }
+            var x = data.TryGet<int>("COMMON", "StatisterTimeMs");
+            Console.WriteLine(x);
+            
         }
     }
 }

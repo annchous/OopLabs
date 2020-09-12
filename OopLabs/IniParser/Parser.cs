@@ -24,7 +24,7 @@ namespace IniParser
         public string ParseSectionName(string name)
         {
             if (IsSection(name))
-                return name.Substring(1, name.Length - 2);
+                return name.Replace("[", "").Replace("]", "").Trim();
             throw new NotSectionLine("This line is not a section. Section line must starts with '['!");
         }
 

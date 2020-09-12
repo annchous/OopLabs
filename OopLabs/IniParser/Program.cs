@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 
 namespace IniParser
 {
@@ -6,14 +8,13 @@ namespace IniParser
     {
         static void Main(string[] args)
         {
-            Parser parser = new Parser("C:\\homework\\abc.ini");
-            string toParseString = "key =        value; comment";
-            string section = "[COMMON]";
-            Console.WriteLine(parser.iniFile.Name);
-            Console.WriteLine("input:\n" + section + '\n' + toParseString + '\n' + "output:");
-            Console.WriteLine(parser.ParseSectionName(section));
-            Console.WriteLine(parser.ParsePropertyKey(toParseString));
-            Console.WriteLine(parser.ParsePropertyValue(toParseString));
+            //IniParser parser = new IniParser("lab1.ini");
+            //parser.ReadData();
+            IniParser parser = new IniParser();
+            parser.ParseSection("[COMMON]");
+            parser.ParseProperty("hello = 1.5", "COMMON");
+            var x = parser.Data.Data.Last().Value.Last();
+            Console.WriteLine(x.Value);
         }
     }
 }

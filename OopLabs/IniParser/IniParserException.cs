@@ -20,5 +20,32 @@ namespace IniParser
             { }
         }
 
+        public class PropertyKeyNotFound : Exception
+        {
+            public PropertyKeyNotFound(string message)
+                : base(message)
+            { }
+        }
+
+        public class NoPropertyKeyFound : Exception
+        {
+            public NoPropertyKeyFound(string message)
+                : base(message)
+            { }
+        }
+
+        public class NotPropertyLine : Exception
+        {
+            public NotPropertyLine(string message)
+                : base(message)
+            { }
+        }
+
+        public class NotSectionLine : Exception
+        {
+            public NotSectionLine(string message)
+                : base(message)
+            { }
+        }
     }
 }

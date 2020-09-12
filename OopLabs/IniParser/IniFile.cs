@@ -10,15 +10,23 @@ namespace IniParser
     {
         public string Name { get; }
         public string Path { get; }
-        public List<string> data;
+        public List<string> Data;
         public IniFile(string path)
         {
             Name = System.IO.Path.GetFileName(path);
             Path = path;
-            data = new List<string>();
+            Data = new List<string>();
         }
 
         public bool RightFormat() => GetFormat().Equals("ini");
         public string GetFormat() => Name.Substring(Name.IndexOf('.') + 1);
+
+        public void ReadData()
+        {
+
+            StreamReader sr = new StreamReader(Path);
+            while (!sr.EndOfStream)
+                Data.Add(sr.ReadLine());
+        }
     }
 }

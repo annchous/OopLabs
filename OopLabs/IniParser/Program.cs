@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("IniParserTest")]
 
 namespace IniParser
 {
@@ -9,10 +9,10 @@ namespace IniParser
     {
         static void Main(string[] args)
         {
-            IniParser parser = new IniParser("lab1.ini");
+            IniParser parser = new IniParser("lab1.data.ini");
             var data = parser.Parse();
 
-            var x = data.TryGet<int>("COMMON", "StatisterTimeMs");
+            var x = data.TryGet<int>("COMMON", "hello");
             Console.WriteLine(x);
             
         }

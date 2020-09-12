@@ -20,6 +20,13 @@ namespace IniParser
             { }
         }
 
+        public class SectionNotFound : Exception
+        {
+            public SectionNotFound(string message)
+                : base(message)
+            { }
+        }
+
         public class PropertyKeyNotFound : Exception
         {
             public PropertyKeyNotFound(string message)

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks.Dataflow;
 using IniParser.IniParserException;
 
 namespace IniParser
@@ -35,17 +31,19 @@ namespace IniParser
 
         public void ParseProperty(string line, string sectionName)
         {
-            if (!Data.HasAnySection())
+            if (!Data.AnySectionExists())
                 throw new NoPropertyKeyFound("No Section was found! You need to have a section to add new property!");
 
             var section = Data.GetSection(sectionName);
+            if (section == null)
+                throw new SectionNotFound($"Section {sectionName} was not found!");
             Data.AddProperty(section, Parser.ParsePropertyLine(line));
         }
 
         public void ParseSection(string line)
         {
-            var section = new Section(Parser.ParseSectionName(line));
-            if (!Data.HasSection(section))
+            var section = Parser.ParseSectionLine(line);
+            if (!Data.SectionExists(section))
                 Data.AddSection(section);
         }
 

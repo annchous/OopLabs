@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using IniParser.IniParserException;
 
 namespace IniParser
@@ -70,7 +68,6 @@ namespace IniParser
         public bool HasComment(string line) => line.Contains(';');
         public bool CommentOnlyLine(string line) => line.Trim().StartsWith(';');
         public bool EmptyLine(string line) => String.IsNullOrEmpty(line);
-
         public bool LineToIgnore(string line) =>
             CommentOnlyLine(line) || EmptyLine(line) || (!IsSection(line) && !IsProperty(line));
     }

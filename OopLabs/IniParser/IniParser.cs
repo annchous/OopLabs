@@ -6,64 +6,64 @@ namespace IniParser
 {
     class IniParser
     {
-        public Parser Parser;
-        public IniData Data;
+        private Parser _parser;
+        private IniData _data;
 
         public IniParser()
         {
-            Parser = new Parser();
-            Data = new IniData();
+            _parser = new Parser();
+            _data = new IniData();
         }
         public IniParser(string path)
         {
-            Parser = new Parser(path);
-            Data = new IniData();
+            _parser = new Parser(path);
+            _data = new IniData();
         }
 
         public void ReadData()
         {
-            if (!File.Exists(Parser.IniFile.Path))
+            if (!File.Exists(_parser.IniFile.Path))
                 throw new FileNotFound("This file was not found!");
-            if (!Parser.IniFile.RightFormat())
+            if (!_parser.IniFile.RightFormat())
                 throw new WrongFileFormat("Wrong file format! It should be '.ini'!");
-            Parser.IniFile.ReadData();
+            _parser.IniFile.ReadData();
         }
 
         public void ParseProperty(string line, string sectionName)
         {
-            if (!Data.AnySectionExists())
+            if (!_data.AnySectionExists())
                 throw new NoPropertyKeyFound("No Section was found! You need to have a section to add new property!");
 
-            var section = Data.GetSection(sectionName);
+            var section = _data.GetSection(sectionName);
             if (section == null)
                 throw new SectionNotFound($"Section {sectionName} was not found!");
-            Data.AddProperty(section, Parser.ParsePropertyLine(line));
+            _data.AddProperty(section, _parser.ParsePropertyLine(line));
         }
 
         public void ParseSection(string line)
         {
-            var section = Parser.ParseSectionLine(line);
-            if (!Data.SectionExists(section))
-                Data.AddSection(section);
+            var section = _parser.ParseSectionLine(line);
+            if (!_data.SectionExists(section))
+                _data.AddSection(section);
         }
 
         public IniData Parse()
         {
             ReadData();
             string currentSection = "";
-            foreach (var line in Parser.IniFile.Data)
+            foreach (var line in _parser.IniFile.Data)
             {
-                if (Parser.LineToIgnore(line))
+                if (_parser.LineToIgnore(line))
                     continue;
-                if (Parser.IsSection(line))
+                if (_parser.IsSection(line))
                 {
                     ParseSection(line);
-                    currentSection = Parser.ParseSectionName(line);
+                    currentSection = _parser.ParseSectionName(line);
                 }
-                else if (Parser.IsProperty(line))
+                else if (_parser.IsProperty(line))
                     ParseProperty(line, currentSection);
             }
-            return Data;
+            return _data;
         }
     }
 }

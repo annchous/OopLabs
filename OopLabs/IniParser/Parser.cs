@@ -19,10 +19,10 @@ namespace IniParser
             _formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
         }
 
-        public string ParseSectionName(string name)
+        public string ParseSectionName(string sectionName)
         {
-            if (IsSection(name))
-                return name.Replace("[", "").Replace("]", "").Trim();
+            if (IsSection(sectionName))
+                return sectionName.Replace("[", "").Replace("]", "").Trim();
             throw new NotSectionLine("This line is not a section. Section line must starts with '['!");
         }
 

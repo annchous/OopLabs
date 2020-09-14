@@ -23,7 +23,10 @@ namespace IniParser
 
         public void ReadData()
         {
-
+            if (!File.Exists(Path))
+                throw new FileNotFound("This file was not found!");
+            if (!RightFormat())
+                throw new WrongFileFormat("Wrong file format! It should be '.ini'!");
             StreamReader sr = new StreamReader(Path);
             while (!sr.EndOfStream)
                 Data.Add(sr.ReadLine());

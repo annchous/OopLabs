@@ -37,5 +37,23 @@ namespace IniParserTest
             var ex = Assert.ThrowsException<IniParser.IniParserException.WrongParameterValueType>(() => data.TryGet<double>("COMMON", "StatisterTimeMs"));
             Assert.AreEqual("Type of StatisterTimeMs in section COMMON is not Double!", ex.Message);
         }
+
+        [TestMethod]
+        public void TestFileNotFound()
+        {
+            var parser = new IniParser.IniParser("lab1.in");
+
+            var ex = Assert.ThrowsException<IniParser.IniParserException.FileNotFound>(() => parser.ReadData());
+            Assert.AreEqual("This file was not found!", ex.Message);
+        }
+
+        [TestMethod]
+        public void WrongFileFormat()
+        {
+            var parser = new IniParser.IniParser("test.in");
+
+            var ex = Assert.ThrowsException<IniParser.IniParserException.WrongFileFormat>(() => parser.ReadData());
+            Assert.AreEqual("Wrong file format! It should be '.ini'!", ex.Message);
+        }
     }
 }

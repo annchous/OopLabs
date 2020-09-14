@@ -20,15 +20,7 @@ namespace IniParser
             _data = new IniData();
         }
 
-        public void ReadData()
-        {
-            if (!File.Exists(_parser.IniFile.Path))
-                throw new FileNotFound("This file was not found!");
-            if (!_parser.IniFile.RightFormat())
-                throw new WrongFileFormat("Wrong file format! It should be '.ini'!");
-            _parser.IniFile.ReadData();
-        }
-
+        public void ReadData() => _parser.IniFile.ReadData();
         public void ParseProperty(string line, string sectionName)
         {
             if (!_data.AnySectionExists())

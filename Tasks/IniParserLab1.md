@@ -105,7 +105,7 @@ public Property ParsePropertyLine(string propertyLine)
 ```
 
 #### [Section.cs](https://github.com/annchous/OopLabs/blob/master/OopLabs/IniParser/Section.cs) & [Property.cs](https://github.com/annchous/OopLabs/blob/master/OopLabs/IniParser/Property.cs)
-Contain a view of entities ```Section``` and ```Property```
+Contain a view of entities ```Section``` and ```Property```.
 
 #### [IniFile.cs](https://github.com/annchous/OopLabs/blob/master/OopLabs/IniParser/IniFile.cs)
 Represents the source file.

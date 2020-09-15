@@ -7,8 +7,8 @@ namespace IniParser
     class Property
     {
         public string Name { get; }
-        public object Value { get; }
-        public Property(string name, object value)
+        public string Value { get; }
+        public Property(string name, string value)
         {
             Name = name;
             Value = value;

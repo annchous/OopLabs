@@ -34,8 +34,8 @@ namespace IniParserTest
             var parser = new IniParser.IniParser("lab1.data.ini");
             var data = parser.Parse();
 
-            var ex = Assert.ThrowsException<IniParser.IniParserException.WrongParameterValueType>(() => data.TryGet<double>("COMMON", "StatisterTimeMs"));
-            Assert.AreEqual("Type of StatisterTimeMs in section COMMON is not Double!", ex.Message);
+            var ex = Assert.ThrowsException<IniParser.IniParserException.BadValueCast>(() => data.TryGet<int>("COMMON", "DiskCachePath"));
+            Assert.AreEqual("Type of /sata/panorama can not be converted to Int32!", ex.Message);
         }
 
         [TestMethod]

@@ -45,15 +45,18 @@ namespace IniParser
             string currentSection = "";
             foreach (var line in _parser.IniFile.Data)
             {
-                if (_parser.LineToIgnore(line))
+                string newLine = line;
+                if (_parser.HasComment(line))
+                    newLine = line.Remove(line.IndexOf(';'), line.Length - line.IndexOf(';'));
+                if (_parser.LineToIgnore(newLine))
                     continue;
-                if (_parser.IsSection(line))
+                if (_parser.IsSection(newLine))
                 {
-                    ParseSection(line);
-                    currentSection = _parser.ParseSectionName(line);
+                    ParseSection(newLine);
+                    currentSection = _parser.ParseSectionName(newLine);
                 }
-                else if (_parser.IsProperty(line))
-                    ParseProperty(line, currentSection);
+                else if (_parser.IsProperty(newLine))
+                    ParseProperty(newLine, currentSection);
             }
             return _data;
         }

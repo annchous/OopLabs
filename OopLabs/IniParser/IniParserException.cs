@@ -55,9 +55,9 @@ namespace IniParser
             { }
         }
 
-        public class WrongParameterValueType : Exception
+        public class BadValueCast : Exception
         {
-            public WrongParameterValueType(string message)
+            public BadValueCast(string message)
                 : base(message)
             { }
         }

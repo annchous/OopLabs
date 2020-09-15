@@ -11,5 +11,10 @@ namespace IniParser
         {
             Name = name;
         }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

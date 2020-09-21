@@ -49,5 +49,19 @@ namespace IniParserTest
 
             Assert.AreEqual(1, x);
         }
+
+        [TestMethod]
+        public void SameSectionTest()
+        {
+            var parser = new IniParser.IniParser("lab1.data.ini");
+            var data = parser.Parse();
+
+            var x = data.TryGetString("COMMON", "DiskCachePath");
+            var y = data.TryGetInt("COMMON", "hello");
+
+            Assert.AreEqual("/sata/panorama", x);
+            Assert.AreEqual(10, y);
+            
+        }
     }
 }

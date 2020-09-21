@@ -14,7 +14,20 @@ namespace IniParser
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode();
+            unchecked
+            {
+                return Name.GetHashCode();
+            }
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            Section section = obj as Section;
+
+            if (section as Section == null) return false;
+
+            return this.Name == section.Name;
         }
     }
 }

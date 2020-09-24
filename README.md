@@ -8,3 +8,4 @@
 
 ### Description of tasks and implementations
 * [Lab 1: INI file parser](https://github.com/annchous/OopLabs/blob/master/Tasks/IniParserLab1.md)
+* [Lab 2: Shop](https://github.com/annchous/OopLabs/blob/master/Tasks/ShopLab2.md)

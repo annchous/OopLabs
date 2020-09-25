@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using Spectre.Console;
-
 namespace Shop
 {
     class Program
@@ -19,7 +20,7 @@ namespace Shop
             Product pasta = new Product("Макароны");
             Product redBull = new Product("РедБулл");
 
-            Shop shop1 = new Shop("Пятёрочка");
+            Shop shop1 = new Shop("Пятёрочка", "Долговая ул. д.239");
             shop1.AddProduct(apple, new ProductStatus(25, 1836));
             shop1.AddProduct(banana, new ProductStatus(34, 993));
             shop1.AddProduct(milk, new ProductStatus(67, 378));
@@ -27,7 +28,7 @@ namespace Shop
             shop1.AddProduct(beer, new ProductStatus(89, 666));
             shop1.AddProduct(toiletPaper, new ProductStatus(120, 426));
 
-            Shop shop2 = new Shop("Перекрёсток");
+            Shop shop2 = new Shop("Перекрёсток", "Денежная ул. д.98");
             shop2.AddProduct(apple, new ProductStatus(30, 832));
             shop2.AddProduct(banana, new ProductStatus(41, 892));
             shop2.AddProduct(milk, new ProductStatus(65, 278));
@@ -36,7 +37,7 @@ namespace Shop
             shop2.AddProduct(redBull, new ProductStatus(127, 284));
             shop2.AddProduct(bread, new ProductStatus(33, 1793));
 
-            Shop shop3 = new Shop("Дикси");
+            Shop shop3 = new Shop("Дикси", "Лесной пр-кт д.9");
             shop3.AddProduct(apple, new ProductStatus(19, 1938));
             shop3.AddProduct(banana, new ProductStatus(41, 892));
             shop3.AddProduct(milk, new ProductStatus(65, 278));
@@ -47,28 +48,24 @@ namespace Shop
             var shopList = new List<Shop> {shop1, shop2, shop3};
             ShopList shops = new ShopList(shopList);
 
-            Dictionary<Shop, Dictionary<Product, ProductStatus>> list = shops.GetProductsOnSum(100);
+            var list = shops.GetProductsOnSum(100);
 
-            AnsiConsole.WriteLine("Бюджет: 100 рублей");
-            var table = new Table();
-            table.AddColumn(new TableColumn("[u]Id магазина[/]"));
-            table.AddColumn(new TableColumn("[u]Название магазина[/]"));
-            table.AddColumn(new TableColumn("[u]Id товара[/]"));
-            table.AddColumn(new TableColumn("[u]Название товара[/]"));
-            table.AddColumn(new TableColumn("[u]Цена товара[/]"));
-            table.AddColumn(new TableColumn("[u]Количество товара[/]"));
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+            
+            AnsiConsole.WriteLine("Список товаров, которые можно купить на 100 рублей");
+            list.PrintShops();
 
-            foreach (var shop in list)
+            AnsiConsole.WriteLine("Список всех магазинов с товарами");
+            shops.PrintShops();
+
+            var sum = shop1.BuyLotOfProducts(new ProductLot(new Dictionary<Product, ProductStatus>
             {
-                foreach (var product in shop.Value)
-                {
-                    table.AddRow($"[red]{shop.Key.Id}[/]", $"[white]{shop.Key.Name}[/]", $"[aqua]{product.Key.Id}[/]",
-                        $"[white]{product.Key.Name}[/]", $"[green]{product.Value.Price}[/]",
-                        $"[yellow]{product.Value.Amount}[/]");
-                }
-            }
+                {apple, new ProductStatus(45)},
+                {banana, new ProductStatus(103)},
+                {milk, new ProductStatus(15)}
+            }));
 
-            AnsiConsole.Render(table);
+            AnsiConsole.WriteLine(sum.ToString());
 
             shops.PrintShops();
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Schema;
 using Shop.Exception;
 using Shop.Exception.ShopException;
 using Spectre.Console;
@@ -13,6 +14,7 @@ namespace Shop
         private static int _counter;
         public string Id { get; }
         public string Name { get; set; }
+        public string Address { get; set; }
         public Dictionary<Product, ProductStatus> Products { get; set; }
 
         public Shop()
@@ -21,17 +23,19 @@ namespace Shop
             Products = new Dictionary<Product, ProductStatus>();
         }
 
-        public Shop(string name)
+        public Shop(string name, string address)
         {
             Id = 'S' + (++_counter).ToString();
             Name = name;
+            Address = address;
             Products = new Dictionary<Product, ProductStatus>();
         }
 
-        public Shop(string name, Dictionary<Product, ProductStatus> products)
+        public Shop(string name, string address, Dictionary<Product, ProductStatus> products)
         {
             Id = 'S' + (++_counter).ToString();
             Name = name;
+            Address = address;
             Products = new Dictionary<Product, ProductStatus>(products);
         }
 
@@ -45,7 +49,7 @@ namespace Shop
             if (obj == null) return false;
             Shop shop = obj as Shop;
             if (shop == null) return false;
-            return shop.Id == this.Id && shop.Name == this.Name;
+            return shop.Id == this.Id && shop.Name == this.Name && shop.Address == this.Address;
         }
 
         public void AddProduct(Product product) => Products.Add(product, new ProductStatus());
@@ -54,7 +58,7 @@ namespace Shop
         public void AddProduct(Product product, int amount) => Products.Add(product, new ProductStatus(amount));
         public void AddProduct(Product product, decimal price, int amount) => Products.Add(product, new ProductStatus(price, amount));
 
-        public void GetProductLot(ProductLot lot)
+        public void AddProductLot(ProductLot lot)
         {
             foreach (var item in lot.Lot)
             {
@@ -62,7 +66,7 @@ namespace Shop
             }
         }
 
-        public void GetProductLot(Product product, ProductStatus productStatus) => Products.Add(product, productStatus);
+        public void AddProductLot(Product product, ProductStatus productStatus) => Products.Add(product, productStatus);
 
         public void SetPrice(Product product, decimal price)
         {
@@ -72,6 +76,42 @@ namespace Shop
                 Products[Products.FirstOrDefault(x => x.Key.Id == product.Id).Key] = new ProductStatus();
             Products.FirstOrDefault(x => x.Key.Id == product.Id).Value.Price = price;
         }
+
+        public object BuyLotOfProducts(ProductLot lot)
+        {
+            if (PossibleToBuyLot(lot))
+            {
+                decimal sum = 0.0m;
+                foreach (var item in lot.Lot)
+                {
+                    var product = GetProductProductStatusPair(item);
+                    product.Value.Value.Amount -= item.Value.Amount;
+                    sum += item.Value.Amount * product.Value.Value.Price;
+                }
+
+                return sum;
+            }
+            return ShopExceptionMessage.ImpossibleToBuyLot;
+        }
+
+        public bool PossibleToBuyLot(ProductLot lot)
+        {
+            foreach (var item in lot.Lot)
+            {
+                var product = GetProductProductStatusPair(item);
+                if (product.Equals(null))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public KeyValuePair<Product, ProductStatus>? GetProductProductStatusPair(KeyValuePair<Product, ProductStatus> pair) 
+            => Products.Where(x => x.Key.Id == pair.Key.Id
+                && x.Key.Name == pair.Key.Name
+                && x.Value.Amount >= pair.Value.Amount)
+                .Select(x => (KeyValuePair<Product, ProductStatus>?) x)
+                .FirstOrDefault();
 
         public Dictionary<Product, ProductStatus> GetProductsOnSum(decimal price)
         {
@@ -98,7 +138,7 @@ namespace Shop
         public object Clone()
         {
             Dictionary<Product, ProductStatus> products = new Dictionary<Product, ProductStatus>(this.Products);
-            return new Shop {Name = this.Name, Products = products};
+            return new Shop {Name = this.Name, Address = this.Address, Products = products};
         }
     }
 }

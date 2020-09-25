@@ -51,12 +51,14 @@ namespace Shop
             where product.Key.Id == id && product.Value.Amount > 0
             select product.Value.Price;
 
-        public Dictionary<Shop, Dictionary<Product, ProductStatus>> GetProductsOnSum(decimal price)
+        public ShopList GetProductsOnSum(decimal price)
         {
-            Dictionary<Shop, Dictionary<Product, ProductStatus>> productList = new Dictionary<Shop, Dictionary<Product, ProductStatus>>();
+            ShopList productList = new ShopList();
             foreach (var shop in Shops)
             {
-                productList.Add((Shop)shop.Clone(), new Dictionary<Product, ProductStatus>(shop.GetProductsOnSum(price)));
+                var newShop = (Shop) shop.Clone();
+                newShop.Products = new Dictionary<Product, ProductStatus>(shop.GetProductsOnSum(price));
+                productList.Shops.Add(newShop);
             }
 
             return productList;
@@ -71,8 +73,9 @@ namespace Shop
                 foreach (var item in shop.Products)
                 {
                     table.AddRow($"[red]{shop.Id}[/]", $"[white]{shop.Name}[/]", 
-                        $"[aqua]{item.Key.Id}[/]", $"[white]{item.Key.Name}[/]", 
-                        $"[green]{item.Value.Price}[/]", $"[yellow]{item.Value.Amount}[/]");
+                        $"[white]{shop.Address}[/]", $"[aqua]{item.Key.Id}[/]", 
+                        $"[white]{item.Key.Name}[/]", $"[green]{item.Value.Price}[/]", 
+                        $"[yellow]{item.Value.Amount}[/]");
                 }
             }
             AnsiConsole.Render(table);
@@ -82,6 +85,7 @@ namespace Shop
         {
             table.AddColumn(new TableColumn("[u]Id магазина[/]"));
             table.AddColumn(new TableColumn("[u]Название магазина[/]"));
+            table.AddColumn(new TableColumn("[u]Адрес магазина[/]"));
             table.AddColumn(new TableColumn("[u]Id товара[/]"));
             table.AddColumn(new TableColumn("[u]Название товара[/]"));
             table.AddColumn(new TableColumn("[u]Цена товара[/]"));

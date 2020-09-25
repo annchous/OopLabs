@@ -60,7 +60,7 @@ namespace Shop
 
             var sum = shop1.BuyLotOfProducts(new ProductLot(new Dictionary<Product, ProductStatus>
             {
-                {apple, new ProductStatus(45)},
+                {apple, new ProductStatus(45000)},
                 {banana, new ProductStatus(103)},
                 {milk, new ProductStatus(15)}
             }));

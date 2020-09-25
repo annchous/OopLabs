@@ -84,9 +84,9 @@ namespace Shop
                 decimal sum = 0.0m;
                 foreach (var item in lot.Lot)
                 {
-                    var product = GetProductProductStatusPair(item);
-                    product.Value.Value.Amount -= item.Value.Amount;
-                    sum += item.Value.Amount * product.Value.Value.Price;
+                    var product = GetProductProductStatusPair(item).Value;
+                    product.Value.Amount -= item.Value.Amount;
+                    sum += item.Value.Amount * product.Value.Price;
                 }
 
                 return sum;

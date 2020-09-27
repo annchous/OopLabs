@@ -6,22 +6,22 @@ namespace Shop.Exception
 {
     namespace ShopException
     {
-        public class ProductNotFound : System.Exception
+        public class ProductNotFoundException : System.Exception
         {
-            public ProductNotFound(string message)
+            public ProductNotFoundException(string message)
                 : base(message)
             { }
         }
-        public class ShopNotFound : System.Exception
+        public class ShopNotFoundException : System.Exception
         {
-            public ShopNotFound(string message)
+            public ShopNotFoundException(string message)
                 : base(message)
             { }
         }
 
-        public class ImpossibleToBuy : System.Exception
+        public class ImpossibleToBuyException : System.Exception
         {
-            public ImpossibleToBuy(string message)
+            public ImpossibleToBuyException(string message = "Impossible to buy this lot!")
                 : base(message)
             {}
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using Shop.Core;
 using Spectre.Console;
 namespace Shop
 {
@@ -48,26 +49,38 @@ namespace Shop
             var shopList = new List<Shop> {shop1, shop2, shop3};
             ShopList shops = new ShopList(shopList);
 
-            var list = shops.GetProductsOnSum(100);
+            var list = shop1.GetProductsOnSum(100);
 
             Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             
             AnsiConsole.WriteLine("Список товаров, которые можно купить на 100 рублей");
-            list.PrintShops();
+            ShopPrinter.PrintProductList(list, shop1);
 
             AnsiConsole.WriteLine("Список всех магазинов с товарами");
             shops.PrintShops();
 
-            var sum = shop1.BuyLotOfProducts(new ProductLot(new Dictionary<Product, ProductStatus>
+            var sum = shop1.BuyLotOfProducts(new ProductLot(new List<ProductRequest>
             {
-                {apple, new ProductStatus(45000)},
-                {banana, new ProductStatus(103)},
-                {milk, new ProductStatus(15)}
+                new ProductRequest(apple, new ProductStatus(45)),
+                new ProductRequest(banana, new ProductStatus(103)),
+                new ProductRequest(milk, new ProductStatus(15)),
             }));
 
             AnsiConsole.WriteLine(sum.ToString());
 
             shops.PrintShops();
+
+            var x = shops.GetShopWithLowestPriceOn("P1");
+            AnsiConsole.WriteLine(x.Name);
+
+            var lot = new ProductLot(new List<ProductRequest>
+            {
+                new ProductRequest(apple, new ProductStatus(10)),
+                new ProductRequest(banana, new ProductStatus(10)),
+            });
+
+            var shop = shops.GetShopWithLowestSumOnLot(lot);
+            AnsiConsole.WriteLine(shop.Name);
         }
     }
 }

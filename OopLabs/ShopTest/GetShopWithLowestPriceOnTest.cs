@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shop;
 using Shop.Core;
 using Shop.Exception.ShopException;
+using System;
+using System.Text;
 
 namespace ShopTest
 {

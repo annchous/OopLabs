@@ -8,12 +8,10 @@ namespace Shop
 {
     class ProductLot
     {
-        //public Dictionary<Product, ProductStatus> Lot { get; set; }
         public List<ProductRequest> Lot { get; set; }
 
         public ProductLot()
         {
-            //Lot = new Dictionary<Product, ProductStatus>();
             Lot = new List<ProductRequest>();
         }
 
@@ -30,10 +28,6 @@ namespace Shop
 
         public ProductLot(Product product, decimal price, int amount)
         {
-            //Lot = new Dictionary<Product, ProductStatus>
-            //{
-            //    { product, new ProductStatus(price, amount) }
-            //};
             Lot = new List<ProductRequest>
             {
                 new ProductRequest(product, new ProductStatus(price, amount))

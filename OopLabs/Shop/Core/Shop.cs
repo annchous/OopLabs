@@ -76,17 +76,25 @@ namespace Shop
         {
             var productToSet = 
                 Products.FirstOrDefault(x => x.Product.Id == product.Id) 
-                ?? throw new ProductNotFoundException(ShopExceptionMessage.ProductNotFound);
+                ?? throw new ProductNotFoundException();
 
             productToSet.ProductStatus ??= new ProductStatus();
             productToSet.ProductStatus.Price = price;
         }
 
-        public bool EmptyShop() => Products.Count == 0;
+        public void SetAmount(Product product, int amount)
+        {
+            var productToSet =
+                Products.FirstOrDefault(x => x.Product.Id == product.Id)
+                ?? throw new ProductNotFoundException();
+
+            productToSet.ProductStatus ??= new ProductStatus();
+            productToSet.ProductStatus.Amount = amount;
+        }
 
         public decimal BuyLotOfProducts(ProductLot lot) => TryBuyLot(lot, out decimal sum)
             ? sum
-            : throw new ImpossibleToBuyException();
+            : throw new ImpossibleToBuyLotException();
 
         public bool TryBuyLot(ProductLot lot, out decimal sum)
         {
@@ -117,8 +125,8 @@ namespace Shop
         public List<ProductRequest> GetProductsOnSum(decimal price)
         {
             List<ProductRequest> result = new List<ProductRequest>();
-            var availableToBuy = GetAvailableToBuyList(price)
-                ?? throw new ImpossibleToBuyException();
+            var availableToBuy = GetAvailableToBuyList(price);
+            if (availableToBuy.Count == 0) throw new ImpossibleToBuyException();
 
             foreach (var item in availableToBuy)
             {

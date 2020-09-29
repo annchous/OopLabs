@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using System.Runtime.CompilerServices;
 using Shop.Core;
 using Spectre.Console;
+
+[assembly: InternalsVisibleTo("ShopTest")]
+
 namespace Shop
 {
     class Program
@@ -21,7 +24,7 @@ namespace Shop
             Product pasta = new Product("Макароны");
             Product redBull = new Product("РедБулл");
 
-            Shop shop1 = new Shop("Пятёрочка", "Долговая ул. д.239");
+            Shop shop1 = new Shop("Пятёрочка", "Хвостовая ул. д.239");
             shop1.AddProduct(apple, new ProductStatus(25, 1836));
             shop1.AddProduct(banana, new ProductStatus(34, 993));
             shop1.AddProduct(milk, new ProductStatus(67, 378));
@@ -52,12 +55,12 @@ namespace Shop
             var list = shop1.GetProductsOnSum(100);
 
             Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
-            
-            AnsiConsole.WriteLine("Список товаров, которые можно купить на 100 рублей");
-            ShopPrinter.PrintProductList(list, shop1);
 
             AnsiConsole.WriteLine("Список всех магазинов с товарами");
             shops.PrintShops();
+
+            AnsiConsole.WriteLine("Список товаров, которые можно купить на 100 рублей в магазине " + shop1.Name);
+            ShopPrinter.PrintProductList(list, shop1);
 
             var sum = shop1.BuyLotOfProducts(new ProductLot(new List<ProductRequest>
             {
@@ -66,12 +69,13 @@ namespace Shop
                 new ProductRequest(milk, new ProductStatus(15)),
             }));
 
-            AnsiConsole.WriteLine(sum.ToString());
+            AnsiConsole.WriteLine("Сумма покупки составила: " + sum);
 
+            AnsiConsole.WriteLine("Список всех магазинов с товарами");
             shops.PrintShops();
 
             var x = shops.GetShopWithLowestPriceOn("P1");
-            AnsiConsole.WriteLine(x.Name);
+            AnsiConsole.WriteLine("Магазин с наименьшей ценой на продукт с id P1: " + x.Name);
 
             var lot = new ProductLot(new List<ProductRequest>
             {
@@ -80,7 +84,7 @@ namespace Shop
             });
 
             var shop = shops.GetShopWithLowestSumOnLot(lot);
-            AnsiConsole.WriteLine(shop.Name);
+            AnsiConsole.WriteLine("Магазин с наименьшей стоимостью покупки набора товаров: " + shop.Name);
         }
     }
 }

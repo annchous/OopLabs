@@ -35,25 +35,21 @@ namespace Shop
             Shops = shops.GetRange(0, shops.Count);
         }
 
-        public Shop GetShopWithLowestPriceOn(string id)
-        {
-            var prices = GetPricesOn(id)
-                ?? throw new ProductNotFoundException(ShopExceptionMessage.ProductNotFound);
-            decimal? minPrice = prices.Min();
-            var result = 
-                (from shop in Shops
-                from product in shop.Products
-                where product.Product.Id == id && product.ProductStatus.Price == minPrice
-                select shop).FirstOrDefault()
-                ?? throw new ShopNotFoundException(ShopExceptionMessage.ShopNotFound);
-            return result;
-        }
+        public Shop GetShopWithLowestPriceOn(string id) => TryGetShop(id, out Shop shop) 
+            ? shop 
+            : throw new ShopNotFoundException();
 
-        public IEnumerable<decimal> GetPricesOn(string id) =>
-            from shop in Shops
-            from product in shop.Products
-            where product.Product.Id == id && product.ProductStatus.Amount > 0
-            select product.ProductStatus.Price;
+        public Shop GetShopWithLowestPriceOn(Product product) => GetShopWithLowestPriceOn(product.Id);
+
+        public bool TryGetShop(string id, out Shop shop)
+        {
+            shop = (from _shop in Shops
+                from product in _shop.Products
+                where product.Product.Id == id && product.ProductStatus.Amount > 0
+                orderby product.ProductStatus.Price
+                select _shop).FirstOrDefault();
+            return shop != null;
+        }
 
         public Shop GetShopWithLowestSumOnLot(ProductLot lot)
         {
@@ -70,8 +66,7 @@ namespace Shop
             }
 
             return shopWithMinSum 
-                   ?? throw new ShopNotFoundException(
-                       ShopExceptionMessage.ShopNotFound);
+                   ?? throw new ShopNotFoundException();
         }
 
         public bool TryGetSumOnLot(Shop shop, ProductLot productLot, out decimal result)

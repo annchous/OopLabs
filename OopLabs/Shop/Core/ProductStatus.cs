@@ -25,6 +25,9 @@ namespace Shop
             Amount = amount;
         }
 
+        public void SetPrice(decimal price) => Price = price;
+        public void SetAmount(int amount) => Amount = amount;
+
         public object Clone()
         {
             return new ProductStatus {Price = this.Price, Amount = this.Amount};

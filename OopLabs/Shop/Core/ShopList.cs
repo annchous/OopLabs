@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using Shop.Core;
-using Shop.Exception;
 using Shop.Exception.ShopException;
-using Spectre.Console;
 
 namespace Shop
 {
     class ShopList
     {
-        public List<Shop> Shops { get; set; }
+        public List<Shop> Shops { get; }
 
         public ShopList()
         {
@@ -43,11 +36,15 @@ namespace Shop
 
         public bool TryGetShop(string id, out Shop shop)
         {
-            shop = (from _shop in Shops
-                from product in _shop.Products
-                where product.Product.Id == id && product.ProductStatus.Amount > 0
-                orderby product.ProductStatus.Price
-                select _shop).FirstOrDefault();
+            shop = Shops
+                .SelectMany(s => s.Products,
+                    (s, p) => new { Shop = s, Product = p })
+                .Where(p => p.Product.Product.Id == id 
+                            && p.Product.ProductStatus.Amount > 0)
+                .OrderBy(p => p.Product.ProductStatus.Price)
+                .Select(s => s.Shop)
+                .FirstOrDefault();
+            
             return shop != null;
         }
 

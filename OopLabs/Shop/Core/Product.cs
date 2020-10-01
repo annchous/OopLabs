@@ -1,22 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Shop
 {
-    class Product : ICloneable
+    class Product
     {
         private static int _counter;
-        public string Id { get; private set; }
-        public string Name { get; set; }
+        public string Id { get; }
+        public string Name { get; }
 
         public Product()
-        {
-            Id = 'P' + (++_counter).ToString();
-        }
+            : this("")
+        {}
         public Product(string name)
         {
             Id = 'P' + (++_counter).ToString();
+            Name = name;
+        }
+
+        private Product(string id, string name)
+        {
+            Id = id;
             Name = name;
         }
 
@@ -33,9 +36,6 @@ namespace Shop
             return product.Id == this.Id && product.Name == this.Name;
         }
 
-        public object Clone()
-        {
-            return new Product {Id = this.Id, Name = this.Name};
-        }
+        public Product CopyWith(string id, string name) => new Product(id, name);
     }
 }

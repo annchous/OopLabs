@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Shop.Core
 {
-    class ProductRequest : ICloneable
+    class ProductRequest
     {
-        public Product Product { get; set; }
-        public ProductStatus ProductStatus { get; set; }
+        public Product Product { get; }
+        public ProductStatus ProductStatus { get; }
 
         public ProductRequest()
             : this(new Product(), new ProductStatus())
@@ -35,12 +34,10 @@ namespace Shop.Core
             return this.Product == productRequest.Product 
                    && this.ProductStatus == productRequest.ProductStatus;
         }
-
-        public object Clone()
-        {
-            return new ProductRequest 
-                {Product = (Product)this.Product.Clone(), 
-                    ProductStatus = (ProductStatus)this.ProductStatus};
-        }
+        
+        public ProductRequest CopyWith(Product product, ProductStatus productStatus) 
+            => new ProductRequest(
+                product.CopyWith(product.Id, product.Name), 
+                productStatus.CopyWith(productStatus.Price, productStatus.Amount));
     }
 }

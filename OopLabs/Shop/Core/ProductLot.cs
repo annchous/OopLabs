@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Shop.Core;
 
 namespace Shop
 {
     class ProductLot
     {
-        public List<ProductRequest> Lot { get; set; }
+        public List<ProductRequest> Lot { get; }
 
         public ProductLot()
         {
@@ -46,17 +45,24 @@ namespace Shop
         public void AddToLot(Product product, decimal price) => Lot.Add(new ProductRequest(product, new ProductStatus(price)));
         public void AddToLot(Product product, int amount) => Lot.Add(new ProductRequest(product, new ProductStatus(amount)));
 
-        public void SetPrice(string id, decimal price) => GetProduct(id).ProductStatus.Price = price;
-        public void SetPrice(Product product, decimal price) => GetProduct(product.Id).ProductStatus.Price = price;
-        public ProductRequest GetProduct(string id) 
+        public void SetPrice(string id, decimal price)
+        {
+            var productToSet = FindProduct(id);
+            productToSet = productToSet.CopyWith(
+                productToSet.Product.CopyWith(productToSet.Product.Id, productToSet.Product.Name),
+                productToSet.ProductStatus.CopyWith(price, productToSet.ProductStatus.Amount));
+            Lot[Lot.IndexOf(productToSet)] = productToSet;
+        }
+        public void SetPrice(Product product, decimal price)
+        {
+            var productToSet = FindProduct(product.Id);
+            productToSet = productToSet.CopyWith(
+                productToSet.Product.CopyWith(productToSet.Product.Id, productToSet.Product.Name),
+                productToSet.ProductStatus.CopyWith(price, productToSet.ProductStatus.Amount));
+            Lot[Lot.IndexOf(productToSet)] = productToSet;
+        }
+        public ProductRequest FindProduct(string id) 
             => Lot.FirstOrDefault(x => x.Product.Id == id);
 
-        public void BringToShop(Shop shop)
-        {
-            foreach (var item in Lot)
-            {
-                shop.AddProduct(item.Product, item.ProductStatus);
-            }
-        }
     }
 }

@@ -1,41 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Xml.Schema;
 using Shop.Core;
-using Shop.Exception;
 using Shop.Exception.ShopException;
-using Spectre.Console;
 
 namespace Shop
 {
-    class Shop : ICloneable
+    class Shop
     {
         private static int _counter;
         public string Id { get; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public List<ProductRequest> Products { get; set; }
+        public string Name { get; }
+        public string Address { get; }
+        public List<ProductRequest> Products { get; }
 
         public Shop()
-        {
-            Id = 'S' + (++_counter).ToString();
-            Products = new List<ProductRequest>();
-        }
+            : this("", "", new List<ProductRequest>())
+        {}
 
         public Shop(string name, string address)
-        {
-            Id = 'S' + (++_counter).ToString();
-            Name = name;
-            Address = address;
-            Products = new List<ProductRequest>();
-        }
+            : this(name, address, new List<ProductRequest>())
+        {}
 
         public Shop(string name, string address, List<ProductRequest> products)
         {
             Id = 'S' + (++_counter).ToString();
+            Name = name;
+            Address = address;
+            Products = new List<ProductRequest>(products);
+        }
+
+        private Shop(string id, string name, string address, List<ProductRequest> products)
+        {
+            Id = id;
             Name = name;
             Address = address;
             Products = new List<ProductRequest>(products);
@@ -60,16 +57,10 @@ namespace Shop
         public void AddProduct(Product product, ProductStatus productStatus) => Products.Add(new ProductRequest(product, productStatus));
         public void AddProduct(Product product, decimal price) => Products.Add(new ProductRequest(product, new ProductStatus(price)));
         public void AddProduct(Product product, int amount) => Products.Add(new ProductRequest(product, new ProductStatus(amount)));
-        public void AddProduct(Product product, decimal price, int amount) => Products.Add(new ProductRequest(product, new ProductStatus(price, amount)));
+        public void AddProduct(Product product, decimal price, int amount) 
+            => Products.Add(new ProductRequest(product, new ProductStatus(price, amount)));
 
-        public void AddProductLot(ProductLot lot)
-        {
-            foreach (var item in lot.Lot)
-            {
-                Products.Add(new ProductRequest(item.Product, item.ProductStatus));
-            }
-        }
-
+        public void AddProductLot(ProductLot lot) => Products.AddRange(lot.Lot);
         public void AddProductLot(Product product, ProductStatus productStatus) => Products.Add(new ProductRequest(product, productStatus));
 
         public void SetPrice(Product product, decimal price)
@@ -78,8 +69,9 @@ namespace Shop
                 Products.FirstOrDefault(x => x.Product.Id == product.Id) 
                 ?? throw new ProductNotFoundException();
 
-            productToSet.ProductStatus ??= new ProductStatus();
-            productToSet.ProductStatus.Price = price;
+            Products[Products.IndexOf(productToSet)] = productToSet.CopyWith(
+                productToSet.Product.CopyWith(productToSet.Product.Id, productToSet.Product.Name), 
+                new ProductStatus(price, productToSet.ProductStatus.Amount));
         }
 
         public void SetAmount(Product product, int amount)
@@ -88,8 +80,9 @@ namespace Shop
                 Products.FirstOrDefault(x => x.Product.Id == product.Id)
                 ?? throw new ProductNotFoundException();
 
-            productToSet.ProductStatus ??= new ProductStatus();
-            productToSet.ProductStatus.Amount = amount;
+            Products[Products.IndexOf(productToSet)] = productToSet.CopyWith(
+                productToSet.Product.CopyWith(productToSet.Product.Id, productToSet.Product.Name),
+                new ProductStatus(productToSet.ProductStatus.Price, amount));
         }
 
         public decimal BuyLotOfProducts(ProductLot lot) => TryBuyLot(lot, out decimal sum)
@@ -102,21 +95,23 @@ namespace Shop
 
             foreach (var item in lot.Lot)
             {
-                if (GetProductRequest(item) == null)
+                if (FindProductRequest(item) == null)
                     return false;
             }
 
             foreach (var item in lot.Lot)
             {
-                var product = GetProductRequest(item).ProductStatus;
-                product.Amount -= item.ProductStatus.Amount;
-                sum += item.ProductStatus.Amount * product.Price;
+                var product = FindProductRequest(item);
+                var newAmount = product.ProductStatus.Amount - item.ProductStatus.Amount;
+                Products[Products.IndexOf(product)] = product.CopyWith(product.Product.CopyWith(product.Product.Id, product.Product.Name),
+                    product.ProductStatus.CopyWith(product.ProductStatus.Price, newAmount));
+                sum += item.ProductStatus.Amount * product.ProductStatus.Price;
             }
 
             return true;
         }
 
-        public ProductRequest GetProductRequest(ProductRequest pair) => 
+        public ProductRequest FindProductRequest(ProductRequest pair) => 
             Products.FirstOrDefault(x =>
                     x.Product.Id == pair.Product.Id
                     && x.Product.Name == pair.Product.Name
@@ -131,13 +126,17 @@ namespace Shop
             foreach (var item in availableToBuy)
             {
                 ProductRequest productRequest = new ProductRequest(
-                    (Product)item.Product.Clone(), 
-                    (ProductStatus)item.ProductStatus.Clone());
+                    item.Product.CopyWith(item.Product.Id, item.Product.Name), 
+                    item.ProductStatus.CopyWith(item.ProductStatus.Price, item.ProductStatus.Amount));
 
                 result.Add(productRequest);
                 var availableAmount = (int)(price / productRequest.ProductStatus.Price);
                 if (availableAmount <= productRequest.ProductStatus.Amount)
-                    result[result.IndexOf(productRequest)].ProductStatus.Amount = availableAmount;
+                {
+                    var product = result[result.IndexOf(productRequest)];
+                    result[result.IndexOf(productRequest)] = product.CopyWith(product.Product.CopyWith(product.Product.Id, product.Product.Name),
+                        product.ProductStatus.CopyWith(product.ProductStatus.Price, availableAmount));
+                }
             }
 
             return result;
@@ -177,11 +176,8 @@ namespace Shop
             return product != null;
         }
 
-        public object Clone()
-        {
-            List<ProductRequest> products = new List<ProductRequest>(this.Products);
-            return new Shop { Name = this.Name, Address = this.Address, Products = products };
-        }
+        public Shop CopyWith(string id, string name, string address, List<ProductRequest> products) 
+            => new Shop(id, name, address, products);
 
         public void PrintShop() => ShopPrinter.PrintSingleShop(this);
     }

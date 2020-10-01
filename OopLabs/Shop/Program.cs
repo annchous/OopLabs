@@ -85,6 +85,9 @@ namespace Shop
 
             var shop = shops.GetShopWithLowestSumOnLot(lot);
             AnsiConsole.WriteLine("Магазин с наименьшей стоимостью покупки набора товаров: " + shop.Name);
+
+            var copiedShop1 = shop1.CopyWith(shop1.Id, shop1.Name, shop1.Address, shop1.Products);
+            copiedShop1.PrintShop();
         }
     }
 }

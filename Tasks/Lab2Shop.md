@@ -25,3 +25,28 @@ For demonstration you need to create at least 3 different stores, 10 types of go
 
 ### Code description
 
+#### Product.cs
+
+Represents the entity of a product. Contains an ```Id``` field with an auto-assigned value and a ```Name``` field.
+
+#### ProductStatus.cs
+
+Represents the essence of the characteristics of a product displayed in a store. Contains the ```Price``` and ```Amount``` fields.
+
+#### ProductRequest.cs
+
+Represents the single entity of the product displayed in the store. Contains the fields ```Product``` and ```ProductStatus```.
+
+#### ProductLot.cs
+
+Represents the entity of a consignment. Contains a ```List<ProductRequest>``` field.
+
+Has 6 overloads of the ```AddToLot``` method:
+```
+public void AddToLot(ProductRequest productRequest)
+public void AddToLot(Product product, ProductStatus productStatus)
+public void AddToLot(Product product)
+public void AddToLot(Product product, decimal price, int amount)
+public void AddToLot(Product product, decimal price)
+public void AddToLot(Product product, int amount)
+```

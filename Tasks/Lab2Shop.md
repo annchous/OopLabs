@@ -76,8 +76,13 @@ public void AddProductLot(ProductLot lot)
 public void AddProductLot(Product product, ProductStatus productStatus)
 ```
 
-Contains a method ```public List<ProductRequest> GetProductsOnSum(decimal price)``` that implements task 5 of the task condition.
+Contains a method ```public List<ProductRequest> GetProductsOnSum(decimal price)``` that implements item 5 of the task condition.
 
-Contains a method ```public decimal BuyLotOfProducts(ProductLot lot)``` that implements task 6 of the task condition (throws an exception if a purchase is not possible).
+Contains a method ```public decimal BuyLotOfProducts(ProductLot lot)``` that implements item 6 of the task condition (throws an exception if a purchase is not possible).
 
 #### ShopList.cs
+
+Represents an entity that stores a list of shops. Contains an ```public List<Shop> Shops``` field.
+
+Contains a method ```public Shop GetShopWithLowestPriceOn(string id)``` that implements item 4 of the task condition.
+Contains a method ```public Shop GetShopWithLowestSumOnLot(ProductLot lot)``` that implements item 7 of the task condition.

@@ -2,6 +2,7 @@
 ### Laboratory work №2
 
 ### [Solution](https://github.com/annchous/OopLabs/tree/master/OopLabs/Shop)
+### [Tests]()
 
 There are **Products** that are sold in **Stores**.
 * Stores have a code (unique), a name (not necessarily unique) and an address.
@@ -85,4 +86,17 @@ Contains a method ```public decimal BuyLotOfProducts(ProductLot lot)``` that imp
 Represents an entity that stores a list of shops. Contains an ```public List<Shop> Shops``` field.
 
 Contains a method ```public Shop GetShopWithLowestPriceOn(string id)``` that implements item 4 of the task condition.
+
 Contains a method ```public Shop GetShopWithLowestSumOnLot(ProductLot lot)``` that implements item 7 of the task condition.
+
+#### ShopException.cs
+
+Represents a custom exception class.
+
+#### ShopPrinter.cs
+
+Represents a class for formatted console output as a table.
+
+#### Program.cs
+
+A class with a ```Main``` method.

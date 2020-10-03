@@ -31,7 +31,7 @@ Represents the entity of a product. Contains an ```Id``` field with an auto-assi
 
 #### ProductStatus.cs
 
-Represents the essence of the characteristics of a product displayed in a store. Contains the ```Price``` and ```Amount``` fields.
+Represents the entity of the characteristics of a product displayed in a store. Contains the ```Price``` and ```Amount``` fields.
 
 #### ProductRequest.cs
 
@@ -39,7 +39,7 @@ Represents the single entity of the product displayed in the store. Contains the
 
 #### ProductLot.cs
 
-Represents the entity of a consignment. Contains a ```List<ProductRequest>``` field.
+Represents the entity of a consignment. Contains a ```List<ProductRequest> Lot``` field.
 
 Has 6 overloads of the ```AddToLot``` method:
 ```
@@ -50,3 +50,33 @@ public void AddToLot(Product product, decimal price, int amount)
 public void AddToLot(Product product, decimal price)
 public void AddToLot(Product product, int amount)
 ```
+
+Has 2 overloads of the ```SetPrice``` method:
+```
+public void SetPrice(string id, decimal price)
+public void SetPrice(Product product, decimal price)
+```
+
+#### Shop.cs
+
+Represents the entity of a shop. Contains an ```Id``` field with an auto-assigned value and ```Name```, ```Address ``` and ```List<ProductRequest> Products``` fields.
+
+Has 5 overloads of the ```AddProduct``` method:
+```
+public void AddProduct(Product product)
+public void AddProduct(Product product, ProductStatus productStatus)
+public void AddProduct(Product product, decimal price)
+public void AddProduct(Product product, int amount)
+public void AddProduct(Product product, decimal price, int amount) 
+```
+
+Has 2 overloads of the ```AddProductLot``` method:
+```
+public void AddProductLot(ProductLot lot)
+public void AddProductLot(Product product, ProductStatus productStatus)
+```
+
+Contains a method ```public List<ProductRequest> GetProductsOnSum(decimal price)``` that implements task 5 of the task condition.
+Contains a method ```public decimal BuyLotOfProducts(ProductLot lot)``` that implements task 6 of the task condition (throws an exception if a purchase is not possible).
+
+#### ShopList.cs

@@ -97,6 +97,8 @@ Represents a custom exception class.
 
 Represents a class for formatted console output as a table.
 
+![Shop](https://github.com/annchous/OopLabs/blob/lab2/Tasks/shop.PNG)
+
 #### Program.cs
 
 A class with a ```Main``` method.

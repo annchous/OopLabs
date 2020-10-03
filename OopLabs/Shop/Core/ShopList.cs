@@ -38,10 +38,10 @@ namespace Shop
         {
             shop = Shops
                 .SelectMany(s => s.Products,
-                    (s, p) => new { Shop = s, Product = p })
-                .Where(p => p.Product.Product.Id == id 
-                            && p.Product.ProductStatus.Amount > 0)
-                .OrderBy(p => p.Product.ProductStatus.Price)
+                    (s, p) => new { Shop = s, ProductRequest = p })
+                .Where(p => p.ProductRequest.Product.Id == id 
+                            && p.ProductRequest.ProductStatus.Amount > 0)
+                .OrderBy(p => p.ProductRequest.ProductStatus.Price)
                 .Select(s => s.Shop)
                 .FirstOrDefault();
             

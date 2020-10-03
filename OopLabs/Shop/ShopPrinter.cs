@@ -10,13 +10,13 @@ namespace Shop
     {
         public static void CreateTableHeader(Table table)
         {
-            table.AddColumn(new TableColumn("[u]Id магазина[/]"));
-            table.AddColumn(new TableColumn("[u]Название магазина[/]"));
-            table.AddColumn(new TableColumn("[u]Адрес магазина[/]"));
-            table.AddColumn(new TableColumn("[u]Id товара[/]"));
-            table.AddColumn(new TableColumn("[u]Название товара[/]"));
-            table.AddColumn(new TableColumn("[u]Цена товара[/]"));
-            table.AddColumn(new TableColumn("[u]Количество товара[/]"));
+            table.AddColumn(new TableColumn("[underline white]Id магазина[/]"));
+            table.AddColumn(new TableColumn("[underline white]Название магазина[/]"));
+            table.AddColumn(new TableColumn("[underline white]Адрес магазина[/]"));
+            table.AddColumn(new TableColumn("[underline white]Id товара[/]"));
+            table.AddColumn(new TableColumn("[underline white]Название товара[/]"));
+            table.AddColumn(new TableColumn("[underline white]Цена товара[/]"));
+            table.AddColumn(new TableColumn("[underline white]Количество товара[/]"));
         }
 
         public static void PrintShop(Shop shop, Table table)
@@ -24,7 +24,7 @@ namespace Shop
             foreach (var item in shop.Products)
             {
                 table.AddRow($"[red]{shop.Id}[/]", $"[white]{shop.Name}[/]",
-                    $"[white]{shop.Address}[/]", $"[aqua]{item.Product.Id}[/]",
+                    $"[fuchsia]{shop.Address}[/]", $"[aqua]{item.Product.Id}[/]",
                     $"[white]{item.Product.Name}[/]", $"[green]{item.ProductStatus.Price}[/]",
                     $"[yellow]{item.ProductStatus.Amount}[/]");
             }
@@ -63,7 +63,7 @@ namespace Shop
         public static void AddProductToTable(ProductRequest product, Shop shop, Table table) => 
             table.AddRow(
             $"[red]{shop.Id}[/]", $"[white]{shop.Name}[/]",
-            $"[white]{shop.Address}[/]", $"[aqua]{product.Product.Id}[/]",
+            $"[fuchsia]{shop.Address}[/]", $"[aqua]{product.Product.Id}[/]",
             $"[white]{product.Product.Name}[/]", $"[green]{product.ProductStatus.Price}[/]",
             $"[yellow]{product.ProductStatus.Amount}[/]");
     }

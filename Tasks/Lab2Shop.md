@@ -2,7 +2,7 @@
 ### Laboratory work №2
 
 ### [Solution](https://github.com/annchous/OopLabs/tree/master/OopLabs/Shop)
-### [Tests]()
+### [Tests](https://github.com/annchous/OopLabs/tree/lab2/OopLabs/ShopTest)
 
 There are **Products** that are sold in **Stores**.
 * Stores have a code (unique), a name (not necessarily unique) and an address.

@@ -33,8 +33,6 @@ namespace Shop.Core
         }
         
         public ProductRequest CopyWith(Product product, ProductStatus productStatus) 
-            => new ProductRequest(
-                product.CopyWith(product.Id, product.Name), 
-                productStatus.CopyWith(productStatus.Price, productStatus.Amount));
+            => new ProductRequest(product, productStatus);
     }
 }

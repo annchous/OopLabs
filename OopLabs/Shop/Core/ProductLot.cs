@@ -57,7 +57,7 @@ namespace Shop
         {
             var productToSet = FindProduct(product.Id);
             productToSet = productToSet.CopyWith(
-                productToSet.Product.CopyWith(productToSet.Product.Id, productToSet.Product.Name),
+                productToSet.Product,
                 productToSet.ProductStatus.CopyWith(price, productToSet.ProductStatus.Amount));
             Lot[Lot.IndexOf(productToSet)] = productToSet;
         }

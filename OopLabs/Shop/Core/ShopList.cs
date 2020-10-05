@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using Spectre.Console;
+using Shop.Exception.ShopException;
 
 namespace Shop
 {
     class ShopList
     {
-        public List<Shop> Shops { get; set; }
+        public List<Shop> Shops { get; }
 
         public ShopList()
         {
@@ -32,64 +28,56 @@ namespace Shop
             Shops = shops.GetRange(0, shops.Count);
         }
 
-        public Shop GetShopWithLowestPriceOn(string id)
-        {
-            var prices = GetPricesOn(id);
-            // TODO: Custom exception for null
-            decimal? minPrice = prices.Min();
-            var ans = 
-                from shop in Shops
-                from product in shop.Products
-                where product.Key.Id == id && product.Value.Price == minPrice
-                select shop;
-            // TODO: Custom exception for null
-            return ans.FirstOrDefault();
-        }
-        public IEnumerable<decimal> GetPricesOn(string id) => 
-            from shop in Shops
-            from product in shop.Products
-            where product.Key.Id == id && product.Value.Amount > 0
-            select product.Value.Price;
+        public Shop GetShopWithLowestPriceOn(string id) => TryGetShop(id, out Shop shop) 
+            ? shop 
+            : throw new ShopNotFoundException();
 
-        public ShopList GetProductsOnSum(decimal price)
+        public Shop GetShopWithLowestPriceOn(Product product) => GetShopWithLowestPriceOn(product.Id);
+
+        public bool TryGetShop(string id, out Shop shop)
         {
-            ShopList productList = new ShopList();
+            shop = Shops
+                .SelectMany(s => s.Products,
+                    (s, p) => new { Shop = s, ProductRequest = p })
+                .Where(p => p.ProductRequest.Product.Id == id 
+                            && p.ProductRequest.ProductStatus.Amount > 0)
+                .OrderBy(p => p.ProductRequest.ProductStatus.Price)
+                .Select(s => s.Shop)
+                .FirstOrDefault();
+            
+            return shop != null;
+        }
+
+        public Shop GetShopWithLowestSumOnLot(ProductLot lot)
+        {
+            decimal minSum = Decimal.MaxValue;
+            Shop shopWithMinSum = null;
             foreach (var shop in Shops)
             {
-                var newShop = (Shop) shop.Clone();
-                newShop.Products = new Dictionary<Product, ProductStatus>(shop.GetProductsOnSum(price));
-                productList.Shops.Add(newShop);
+                if (TryGetSumOnLot(shop, lot, out decimal sum))
+                    if (sum < minSum)
+                    {
+                        minSum = sum;
+                        shopWithMinSum = shop;
+                    }
             }
 
-            return productList;
+            return shopWithMinSum 
+                   ?? throw new ShopNotFoundException();
         }
 
-        public void PrintShops()
+        public bool TryGetSumOnLot(Shop shop, ProductLot productLot, out decimal result)
         {
-            var table = new Table();
-            CreateTableHeader(table);
-            foreach (var shop in Shops)
+            result = 0.0m;
+            if (shop.TryGetSumOnLot(productLot, out decimal sum))
             {
-                foreach (var item in shop.Products)
-                {
-                    table.AddRow($"[red]{shop.Id}[/]", $"[white]{shop.Name}[/]", 
-                        $"[white]{shop.Address}[/]", $"[aqua]{item.Key.Id}[/]", 
-                        $"[white]{item.Key.Name}[/]", $"[green]{item.Value.Price}[/]", 
-                        $"[yellow]{item.Value.Amount}[/]");
-                }
+                result = sum;
+                return true;
             }
-            AnsiConsole.Render(table);
+
+            return false;
         }
 
-        public void CreateTableHeader(Table table)
-        {
-            table.AddColumn(new TableColumn("[u]Id магазина[/]"));
-            table.AddColumn(new TableColumn("[u]Название магазина[/]"));
-            table.AddColumn(new TableColumn("[u]Адрес магазина[/]"));
-            table.AddColumn(new TableColumn("[u]Id товара[/]"));
-            table.AddColumn(new TableColumn("[u]Название товара[/]"));
-            table.AddColumn(new TableColumn("[u]Цена товара[/]"));
-            table.AddColumn(new TableColumn("[u]Количество товара[/]"));
-        }
+        public void PrintShops() => ShopPrinter.PrintShopList(this);
     }
 }

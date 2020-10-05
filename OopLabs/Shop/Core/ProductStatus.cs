@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Shop
 {
-    class ProductStatus : ICloneable
+    class ProductStatus
     {
-        public decimal Price { get; set; }
-        public int Amount { get; set; }
+        public decimal Price { get; }
+        public int Amount { get; }
 
         public ProductStatus()
             :this(0, 0)
@@ -25,9 +24,6 @@ namespace Shop
             Amount = amount;
         }
 
-        public object Clone()
-        {
-            return new ProductStatus {Price = this.Price, Amount = this.Amount};
-        }
+        public ProductStatus CopyWith(decimal price, int amount) => new ProductStatus(price, amount);
     }
 }

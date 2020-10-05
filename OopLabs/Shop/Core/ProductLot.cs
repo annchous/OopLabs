@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Shop.Core;
 
 namespace Shop
 {
     class ProductLot
     {
-        public Dictionary<Product, ProductStatus> Lot { get; set; }
+        public List<ProductRequest> Lot { get; }
 
         public ProductLot()
         {
-            Lot = new Dictionary<Product, ProductStatus>();
+            Lot = new List<ProductRequest>();
         }
 
         public ProductLot(Product product)
@@ -27,28 +27,42 @@ namespace Shop
 
         public ProductLot(Product product, decimal price, int amount)
         {
-            Lot = new Dictionary<Product, ProductStatus>
+            Lot = new List<ProductRequest>
             {
-                { product, new ProductStatus(price, amount) }
+                new ProductRequest(product, new ProductStatus(price, amount))
             };
         }
 
-        public ProductLot(Dictionary<Product, ProductStatus> lot)
+        public ProductLot(List<ProductRequest> lot)
         {
-            Lot = new Dictionary<Product, ProductStatus>(lot);
+            Lot = new List<ProductRequest>(lot);
         }
 
-        public void SetPrice(string id, decimal price) => GetProduct(id).Value.Price = price;
-        public void SetPrice(Product product, decimal price) => GetProduct(product.Id).Value.Price = price;
-        public KeyValuePair<Product, ProductStatus> GetProduct(string id) 
-            => Lot.FirstOrDefault(x => x.Key.Id == id);
+        public void AddToLot(ProductRequest productRequest) => Lot.Add(productRequest);
+        public void AddToLot(Product product, ProductStatus productStatus) => Lot.Add(new ProductRequest(product, productStatus));
+        public void AddToLot(Product product) => Lot.Add(new ProductRequest(product, new ProductStatus()));
+        public void AddToLot(Product product, decimal price, int amount) => Lot.Add(new ProductRequest(product, new ProductStatus(price, amount)));
+        public void AddToLot(Product product, decimal price) => Lot.Add(new ProductRequest(product, new ProductStatus(price)));
+        public void AddToLot(Product product, int amount) => Lot.Add(new ProductRequest(product, new ProductStatus(amount)));
 
-        public void BringToShop(Shop shop)
+        public void SetPrice(string id, decimal price)
         {
-            foreach (var item in Lot)
-            {
-                shop.AddProduct(item.Key, item.Value);
-            }
+            var productToSet = FindProduct(id);
+            productToSet = productToSet.CopyWith(
+                productToSet.Product.CopyWith(productToSet.Product.Id, productToSet.Product.Name),
+                productToSet.ProductStatus.CopyWith(price, productToSet.ProductStatus.Amount));
+            Lot[Lot.IndexOf(productToSet)] = productToSet;
         }
+        public void SetPrice(Product product, decimal price)
+        {
+            var productToSet = FindProduct(product.Id);
+            productToSet = productToSet.CopyWith(
+                productToSet.Product,
+                productToSet.ProductStatus.CopyWith(price, productToSet.ProductStatus.Amount));
+            Lot[Lot.IndexOf(productToSet)] = productToSet;
+        }
+        public ProductRequest FindProduct(string id) 
+            => Lot.FirstOrDefault(x => x.Product.Id == id);
+
     }
 }

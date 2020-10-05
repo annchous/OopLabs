@@ -9,6 +9,7 @@ namespace Shop
     class Shop
     {
         private static int _counter;
+        private readonly int _id;
         public string Id { get; }
         public string Name { get; }
         public string Address { get; }
@@ -20,7 +21,8 @@ namespace Shop
 
         public Shop(string name, string address, List<ProductRequest> products)
         {
-            Id = 'S' + (++_counter).ToString();
+            _id = ++_counter;
+            Id = 'S' + _id.ToString();
             Name = name;
             Address = address;
             Products = new List<ProductRequest>(products);

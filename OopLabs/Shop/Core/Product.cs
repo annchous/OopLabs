@@ -5,12 +5,14 @@ namespace Shop
     class Product
     {
         private static int _counter;
+        private readonly int _id;
         public string Id { get; }
         public string Name { get; }
 
         public Product(string name)
         {
-            Id = 'P' + (++_counter).ToString();
+            _id = ++_counter;
+            Id = 'P' + _id.ToString();
             Name = name;
         }
 

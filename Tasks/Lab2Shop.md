@@ -2,6 +2,7 @@
 ### Laboratory work №2
 
 ### [Solution](https://github.com/annchous/OopLabs/tree/master/OopLabs/Shop)
+
 ### [Tests](https://github.com/annchous/OopLabs/tree/lab2/OopLabs/ShopTest)
 
 There are **Products** that are sold in **Stores**.

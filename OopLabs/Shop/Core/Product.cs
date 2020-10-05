@@ -8,9 +8,6 @@ namespace Shop
         public string Id { get; }
         public string Name { get; }
 
-        public Product()
-            : this("")
-        {}
         public Product(string name)
         {
             Id = 'P' + (++_counter).ToString();

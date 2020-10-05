@@ -8,9 +8,6 @@ namespace Shop.Core
         public Product Product { get; }
         public ProductStatus ProductStatus { get; }
 
-        public ProductRequest()
-            : this(new Product(), new ProductStatus())
-        {}
         public ProductRequest(Product product)
             : this(product, new ProductStatus())
         {}

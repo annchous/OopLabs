@@ -14,10 +14,6 @@ namespace Shop
         public string Address { get; }
         public List<ProductRequest> Products { get; }
 
-        public Shop()
-            : this("", "", new List<ProductRequest>())
-        {}
-
         public Shop(string name, string address)
             : this(name, address, new List<ProductRequest>())
         {}
@@ -70,8 +66,7 @@ namespace Shop
                 ?? throw new ProductNotFoundException();
 
             Products[Products.IndexOf(productToSet)] = productToSet.CopyWith(
-                productToSet.Product.CopyWith(productToSet.Product.Id, productToSet.Product.Name), 
-                new ProductStatus(price, productToSet.ProductStatus.Amount));
+                productToSet.Product, new ProductStatus(price, productToSet.ProductStatus.Amount));
         }
 
         public void SetAmount(Product product, int amount)
@@ -81,8 +76,7 @@ namespace Shop
                 ?? throw new ProductNotFoundException();
 
             Products[Products.IndexOf(productToSet)] = productToSet.CopyWith(
-                productToSet.Product.CopyWith(productToSet.Product.Id, productToSet.Product.Name),
-                new ProductStatus(productToSet.ProductStatus.Price, amount));
+                productToSet.Product, new ProductStatus(productToSet.ProductStatus.Price, amount));
         }
 
         public decimal BuyLotOfProducts(ProductLot lot) => TryBuyLot(lot, out decimal sum)
@@ -103,7 +97,7 @@ namespace Shop
             {
                 var product = FindProductRequest(item);
                 var newAmount = product.ProductStatus.Amount - item.ProductStatus.Amount;
-                Products[Products.IndexOf(product)] = product.CopyWith(product.Product.CopyWith(product.Product.Id, product.Product.Name),
+                Products[Products.IndexOf(product)] = product.CopyWith(product.Product, 
                     product.ProductStatus.CopyWith(product.ProductStatus.Price, newAmount));
                 sum += item.ProductStatus.Amount * product.ProductStatus.Price;
             }
@@ -125,16 +119,14 @@ namespace Shop
 
             foreach (var item in availableToBuy)
             {
-                ProductRequest productRequest = new ProductRequest(
-                    item.Product.CopyWith(item.Product.Id, item.Product.Name), 
-                    item.ProductStatus.CopyWith(item.ProductStatus.Price, item.ProductStatus.Amount));
+                ProductRequest productRequest = new ProductRequest(item.Product, item.ProductStatus);
 
                 result.Add(productRequest);
                 var availableAmount = (int)(price / productRequest.ProductStatus.Price);
                 if (availableAmount <= productRequest.ProductStatus.Amount)
                 {
                     var product = result[result.IndexOf(productRequest)];
-                    result[result.IndexOf(productRequest)] = product.CopyWith(product.Product.CopyWith(product.Product.Id, product.Product.Name),
+                    result[result.IndexOf(productRequest)] = product.CopyWith(product.Product,
                         product.ProductStatus.CopyWith(product.ProductStatus.Price, availableAmount));
                 }
             }

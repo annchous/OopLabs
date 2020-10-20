@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IniParserTest", "IniParserT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop", "Shop\Shop.csproj", "{0C1A6E0D-AB05-464F-AFE7-57EE90B07904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopTest", "ShopTest\ShopTest.csproj", "{03A12F86-596D-4446-9543-A117AF73333B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopTest", "ShopTest\ShopTest.csproj", "{03A12F86-596D-4446-9543-A117AF73333B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RacingSimulator", "RacingSimulator\RacingSimulator.csproj", "{29E32C7C-4804-4184-A949-A64812968E30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacingSimulatorTest", "RacingSimulatorTest\RacingSimulatorTest.csproj", "{DC11208A-450F-467D-8D27-CFC71904AA1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{03A12F86-596D-4446-9543-A117AF73333B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03A12F86-596D-4446-9543-A117AF73333B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03A12F86-596D-4446-9543-A117AF73333B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29E32C7C-4804-4184-A949-A64812968E30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29E32C7C-4804-4184-A949-A64812968E30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29E32C7C-4804-4184-A949-A64812968E30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29E32C7C-4804-4184-A949-A64812968E30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC11208A-450F-467D-8D27-CFC71904AA1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC11208A-450F-467D-8D27-CFC71904AA1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC11208A-450F-467D-8D27-CFC71904AA1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC11208A-450F-467D-8D27-CFC71904AA1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

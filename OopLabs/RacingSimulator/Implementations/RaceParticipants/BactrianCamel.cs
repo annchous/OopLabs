@@ -8,9 +8,8 @@ namespace RacingSimulator
     {
         protected override int Speed => 10;
         protected override int MoveTime => 30;
-        protected override int RestCounter { get; set; }
 
-        protected override double RestDuration() 
-            => RestCounter == 0 ? 5 : 8;
+        protected override double RestDuration(int number) 
+            => number == 0 ? 5 : 8;
     }
 }

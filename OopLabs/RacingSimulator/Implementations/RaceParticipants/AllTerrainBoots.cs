@@ -7,12 +7,11 @@ namespace RacingSimulator
     class AllTerrainBoots : LandVehicle
     {
         protected override int Speed => 6;
-        protected override int RestCounter { get; set; }
         protected override int MoveTime => 60;
 
-        protected override double RestDuration()
+        protected override double RestDuration(int number)
         {
-            if (RestCounter == 0)
+            if (number == 0)
                 return 10;
             return 5;
         }

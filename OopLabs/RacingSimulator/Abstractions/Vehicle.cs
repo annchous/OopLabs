@@ -6,7 +6,7 @@ namespace RacingSimulator
 {
     public abstract class Vehicle
     {
-        public abstract int Speed { get; }
-        public abstract Type VehicleType { get; }
+        protected abstract int Speed { get; }
+        public abstract double Run(int distance);
     }
 }

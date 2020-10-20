@@ -27,7 +27,9 @@ namespace RacingSimulator
             };
 
             var race = new Race<Vehicle>(1000, vehicles);
-            Console.WriteLine(race.Run().GetType().Name);
+            Console.WriteLine($"Race distance: {race.Distance}\n");
+            var winner = race.RunRace();
+            Console.WriteLine($"Winner: {winner.GetType().Name}");
         }
     }
 }

@@ -6,10 +6,20 @@ namespace RacingSimulator
 {
     abstract class LandVehicle : Vehicle
     {
-        public override Type VehicleType => typeof(LandVehicle);
-        //public abstract int PassedDistance { get; set; }
-        public abstract int RestCounter { get; set; }
-        public abstract int MoveTime { get; }
-        public abstract double RestDuration();
+        protected abstract int RestCounter { get; set; }
+        protected abstract int MoveTime { get; }
+        protected abstract double RestDuration();
+        public override double Run(int distance)
+        {
+            var time = (double)distance / Speed;
+            var restCount = (int)time / MoveTime;
+            for (int i = 0; i < restCount; i++)
+            {
+                time += RestDuration();
+                RestCounter++;
+            }
+
+            return time;
+        }
     }
 }

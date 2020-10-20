@@ -9,3 +9,4 @@
 ### Description of tasks and implementations
 * [Lab 1: INI file parser](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab1IniParser.md)
 * [Lab 2: Shop](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab2Shop.md)
+* [Lab 3: Racing Simulator](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab3RacingSimulator.md)

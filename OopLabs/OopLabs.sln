@@ -15,9 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RacingSimulator", "RacingSi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RacingSimulatorTest", "RacingSimulatorTest\RacingSimulatorTest.csproj", "{DC11208A-450F-467D-8D27-CFC71904AA1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackupInfo", "BackupInfo\BackupInfo.csproj", "{091D26A9-C9DA-48EA-9F25-6C011CF47587}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupApp", "BackupApp\BackupApp.csproj", "{5612188C-5B9D-4B0B-BEC3-60AB7F7CA6AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackupApp", "BackupApp\BackupApp.csproj", "{5612188C-5B9D-4B0B-BEC3-60AB7F7CA6AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +47,6 @@ Global
 		{DC11208A-450F-467D-8D27-CFC71904AA1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC11208A-450F-467D-8D27-CFC71904AA1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC11208A-450F-467D-8D27-CFC71904AA1B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{091D26A9-C9DA-48EA-9F25-6C011CF47587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{091D26A9-C9DA-48EA-9F25-6C011CF47587}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{091D26A9-C9DA-48EA-9F25-6C011CF47587}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{091D26A9-C9DA-48EA-9F25-6C011CF47587}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5612188C-5B9D-4B0B-BEC3-60AB7F7CA6AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5612188C-5B9D-4B0B-BEC3-60AB7F7CA6AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5612188C-5B9D-4B0B-BEC3-60AB7F7CA6AF}.Release|Any CPU.ActiveCfg = Release|Any CPU

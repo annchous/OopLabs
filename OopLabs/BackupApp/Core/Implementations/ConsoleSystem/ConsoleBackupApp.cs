@@ -7,7 +7,7 @@ using BackupApp.Core.Implementations.AlgorithmSystem;
 using BackupApp.Core.Implementations.BackupSystem;
 using BackupApp.Core.Implementations.ConsoleSystem;
 
-namespace BackupApp.Core.Implementations
+namespace BackupApp.Core.Implementations.ConsoleSystem
 {
     class ConsoleBackupApp : IApp
     {
@@ -81,6 +81,7 @@ namespace BackupApp.Core.Implementations
             BackupManager backupManager = ReadData(_dataFile);
             backupManager.CreateBackup(ArgumentParser.ParseBackupType(_args[2]));
 
+            new Cleaner(ref backupManager).Clean();
             SaveData(_dataFile, ref backupManager);
         }
 

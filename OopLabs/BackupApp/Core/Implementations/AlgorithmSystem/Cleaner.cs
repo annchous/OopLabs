@@ -21,9 +21,10 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
             switch (_backupManager.AlgorithmType)
             {
                 case AlgorithmType.Count:
-                    _backupManager.Backups.ForEach(backup => _backupManager.Algorithm.Clean(ref backup));
+                    _backupManager.Backups.ForEach(backup => _backupManager.Algorithm.Clean(ref backup, _backupManager.StorageType));
                     break;
                 case AlgorithmType.Date:
+                    _backupManager.Backups.ForEach(backup => _backupManager.Algorithm.Clean(ref backup, _backupManager.StorageType));
                     break;
                 case AlgorithmType.Size:
                     break;

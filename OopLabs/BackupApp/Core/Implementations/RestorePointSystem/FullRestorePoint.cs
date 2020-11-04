@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using BackupApp.Core.Abstractions;
 
-namespace BackupApp.Core.Implementations
+namespace BackupApp.Core.Implementations.RestorePointSystem
 {
     [Serializable]
     public class FullRestorePoint : RestorePoint

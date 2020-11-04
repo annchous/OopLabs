@@ -19,10 +19,5 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
         {
             throw new NotImplementedException();
         }
-
-        public override void Clean(ref Backup backup)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

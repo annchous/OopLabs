@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace BackupApp.Core.Abstractions
 {
     [Serializable]
-    abstract class RestorePoint
+    public abstract class RestorePoint
     {
         public DateTime Date { get; }
         public long Size { get; }
         public long FullSize { get; }
-        public string Path { get; }
+        public string RestorePointPath { get; }
         public string BackupFilePath { get; }
 
-        public RestorePoint(DateTime date, long size, string path, string backupFilePath)
+        public RestorePoint(DateTime date, long size, string restorePointPath, string backupFilePath)
         {
             Date = date;
             Size = size;
-            Path = path;
+            RestorePointPath = restorePointPath;
             BackupFilePath = backupFilePath;
             FullSize = new FileInfo(BackupFilePath).Length;
         }

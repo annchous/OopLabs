@@ -5,6 +5,28 @@
 
 ### [Tests](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupAppTest)
 
+### Usage example
+
+#### Create new backup
+
+```
+"n" "file1_fullpath" "file2_fullpath" "|" "datafile" "count" "3"
+"n" "file1_fullpath" "file2_fullpath" "|" "datafile" "hybrid" "max" "count" "5" "date" "05.11.2020"
+```
+
+#### Create restore point
+
+```
+"e" "datafile" "full"
+"e" "datafile" "incremental"
+```
+
+#### Add/Delete file from backup
+
+```
+"a/d" "datafile" "fileToDeletePath"
+```
+
 ### Condition
 
 As part of the laboratory work, it is meant the development of a system that controls the process of creating backups. To simplify the lab, you do not need to physically back up the specified files. It will be enough to create a record that the backup was made.

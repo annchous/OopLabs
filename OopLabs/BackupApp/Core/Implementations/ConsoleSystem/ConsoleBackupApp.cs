@@ -6,6 +6,7 @@ using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.AlgorithmSystem;
 using BackupApp.Core.Implementations.BackupSystem;
 using BackupApp.Core.Implementations.ConsoleSystem;
+using BackupApp.Exceptions;
 
 namespace BackupApp.Core.Implementations.ConsoleSystem
 {
@@ -34,7 +35,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                     DeleteBackup();
                     break;
                 case ActionType.Unknown:
-                    throw new ArgumentException();
+                    throw new WrongArgumentFormat(_args[0]);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -57,9 +58,18 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
             }
 
             if (File.Exists(_args[++i]))
-                throw new ArgumentException();
+                throw new FileAlreadyExists(_args[i]);
             _dataFile = _args[i++];
-            File.Create(_dataFile + ".dat").Close();
+
+            try
+            {
+                File.Create(_dataFile + ".dat").Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
 
             var algorithmType = ArgumentParser.ParseAlgorithmType(_args[i++]);
             var backupManager = new BackupManager(fileList, storageType, algorithmType, commonFolder)
@@ -75,7 +85,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
         private void CreateRestorePoint()
         {
             if (_args.Length != 3)
-                throw new ArgumentException();
+                throw new WrongArgumentFormat(string.Join(" ", _args));
 
             _dataFile = _args[1];
             BackupManager backupManager = ReadData(_dataFile);

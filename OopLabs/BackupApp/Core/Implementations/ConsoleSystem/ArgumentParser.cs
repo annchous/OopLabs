@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.AlgorithmSystem;
-using BackupApp.Core.Implementations.BackupSystem;
+using BackupApp.Exceptions;
 
 namespace BackupApp.Core.Implementations.ConsoleSystem
 {
@@ -83,7 +81,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                 _ => StorageType.Unknown
             };
 
-        public static CombinationType ParseCombinationType(string combinationType) =>
+        private static CombinationType ParseCombinationType(string combinationType) =>
             combinationType.ToLower() switch
             {
                 "max" => CombinationType.Max,
@@ -108,14 +106,25 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                         return new SizeAlgorithm(size);
                     else throw new ArgumentException();
                 case AlgorithmType.Hybrid:
-                    break;
+                    return ParseHybridAlgorithm(args, ++index);
                 case AlgorithmType.Unknown:
-                    throw new ArgumentException();
+                    throw new WrongArgumentFormat(args[index]);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(algorithmType), algorithmType, null);
             }
-
-            return null;
         }
 
-        public static List<AlgorithmType> ParseHybridAlgorithm(List<string> algorithmsList) => algorithmsList.Select(ParseAlgorithmType).ToList();
+        private static HybridAlgorithm ParseHybridAlgorithm(string[] args, int index)
+        {
+            var combinationType = ParseCombinationType(args[index++]);
+            var algorithms = new List<Algorithm>();
+            for (int i = index; i < args.Length; i += 2)
+            {
+                var algorithmType = ParseAlgorithmType(args[i]);
+                algorithms.Add(ParseAlgorithm(algorithmType, args, i + 1));
+            }
+
+            return new HybridAlgorithm(algorithms, combinationType);
+        }
     }
 }

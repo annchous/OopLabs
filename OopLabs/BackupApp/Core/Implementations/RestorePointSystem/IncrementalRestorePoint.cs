@@ -11,6 +11,7 @@ namespace BackupApp.Core.Implementations.RestorePointSystem
         public IncrementalRestorePoint(DateTime date, long size, string restorePointPath, string backupFilePath)
             : base(date, size, restorePointPath, backupFilePath)
         {
+            Directory.CreateDirectory(Path.GetDirectoryName(restorePointPath));
             File.Create(RestorePointPath).Close();
             File.WriteAllLines(RestorePointPath, new[]
             {

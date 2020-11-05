@@ -9,7 +9,7 @@ using BackupApp.Core.Implementations.RestorePointSystem;
 namespace BackupApp.Core.Implementations.BackupSystem
 {
     [Serializable]
-    class BackupManager
+    public class BackupManager
     {
         public List<Backup> Backups { get; }
         public StorageType StorageType { get; }

@@ -5,6 +5,8 @@
 
 ### [Tests](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupAppTest)
 
+### [Code description](https://github.com/annchous/OopLabs/blob/lab4/Tasks/Lab4BackupApp.md#code-description)
+
 ### Usage example
 
 #### Create new backup
@@ -71,3 +73,82 @@ The algorithm must take into account that the incremental points should not be l
 
 
 ### Code description
+
+### [Abstractions](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupApp/Core/Abstractions)
+
+#### [Algorithm.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Abstractions/Algorithm.cs)
+
+An abstract class with a common implementation of cleanup recovery points for all algorithms:
+```
+public void Clean(ref Backup backup, StorageType storageType)
+```
+The method of deleting unnecessary points depends on the storage method: in common type the folder of the restore point itself with a backup of all files is deleted, and in separate type of storage the folders with the restore point for each backup are deleted one by one.
+
+#### [IApp.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Abstractions/IApp.cs) and [ICleanable.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Abstractions/ICleanable.cs)
+
+Interfaces implemented in the console interaction class and in the algorithm.
+
+#### [RestorePoint.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Abstractions/RestorePoint.cs)
+
+The base abstract class for the **restore point** entity.
+
+### [Implementations](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupApp/Core/Implementations)
+
+#### [AlgorithmSystem](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupApp/Core/Implementations/AlgorithmSystem)
+
+#### [Cleaner.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/AlgorithmSystem/Cleaner.cs)
+
+Contains a method that starts the cleanup algorithm for the backup:
+```
+public void Clean()
+```
+Implements ```ICleanable``` interface.
+
+**Implementations of four algorithms:**
+* [CountAlgorithm.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/AlgorithmSystem/CountAlgorithm.cs)
+* [DateAlgorithm.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/AlgorithmSystem/DateAlgorithm.cs)
+* [SizeAlgorithm.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/AlgorithmSystem/SizeAlgorithm.cs)
+* [HybridAlgorithm.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/AlgorithmSystem/HybridAlgorithm.cs)
+
+#### [BackupSystem](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupApp/Core/Implementations/BackupSystem)
+
+#### [Backup.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/BackupSystem/Backup.cs)
+
+Represents the entity of the backup. 
+In this case, the backup for each tracked file is different, therefore this class stores a list of restore points for one specific file.
+
+```
+public Guid Id { get; } // backup id
+public string FilePath { get; } // path to backuping file
+public string BackupFolderPath { get; } // path to backup folder
+public List<RestorePoint> RestorePoints { get; } // restore points list
+public int RestorePointsCount { get; set; } // counter for correct naming of files with restore points
+```
+
+#### [BackupManager.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/BackupSystem/BackupManager.cs)
+
+Represents an entity that stores all backups (an object of the ```Backup``` class for each file) and information about the storage type and the cleaning algorithm.
+
+#### [RestorePointSystem](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupApp/Core/Implementations/RestorePointSystem)
+
+Contains implementations of two types of restore points:
+* [FullRestorePoint.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/RestorePointSystem/FullRestorePoint.cs)
+* [IncrementalRestorePoint.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/RestorePointSystem/IncrementalRestorePoint.cs)
+
+#### [ConsoleSystem](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupApp/Core/Implementations/ConsoleSystem)
+
+#### [ArgumentParser.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/ConsoleSystem/ArgumentParser.cs)
+
+Static class for parsing command line arguments.
+
+#### [ConsoleBackupApp.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Core/Implementations/ConsoleSystem/ConsoleBackupApp.cs)
+
+Launched in ```Main```. Implements ```BackupManager``` entity creation and serializes / deserializes information into a date file.
+
+#### [Exceptions](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupApp/Exceptions)
+
+Custom exceptions.
+
+#### [Program.cs](https://github.com/annchous/OopLabs/blob/lab4/OopLabs/BackupApp/Program.cs)
+
+Contains the ```Main``` method.

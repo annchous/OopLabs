@@ -10,7 +10,7 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
     [Serializable]
     class SizeAlgorithm : Algorithm
     {
-        private long _size;
+        private readonly long _size;
         public SizeAlgorithm(long size) : base(AlgorithmType.Size)
         {
             _size = size;
@@ -36,14 +36,15 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
         private int PointsToSaveCount(Backup backup)
         {
             long sum = 0;
-            int count = 0;
-            foreach (var point in backup.RestorePoints.TakeWhile(point => sum + point.Size <= _size))
+            var count = 0;
+            var reversedPointsList = backup.RestorePoints;
+            reversedPointsList.Reverse();
+            foreach (var point in reversedPointsList.TakeWhile(point => sum + point.Size <= _size))
             {
                 sum += point.Size;
                 count++;
             }
 
-            Console.WriteLine(sum);
             return count;
         }
     }

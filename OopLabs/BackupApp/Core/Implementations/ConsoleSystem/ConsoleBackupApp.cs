@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.AlgorithmSystem;
 using BackupApp.Core.Implementations.BackupSystem;
-using BackupApp.Core.Implementations.ConsoleSystem;
 using BackupApp.Exceptions;
 
 namespace BackupApp.Core.Implementations.ConsoleSystem
@@ -33,6 +33,9 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                     break;
                 case ActionType.DeleteBackup:
                     DeleteBackup();
+                    break;
+                case ActionType.AddFile:
+                    AddFile();
                     break;
                 case ActionType.Unknown:
                     throw new WrongArgumentFormat(_args[0]);
@@ -96,7 +99,37 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
         }
 
         private void DeleteBackup()
-        {}
+        {
+            if (_args.Length != 3)
+                throw new WrongArgumentFormat(string.Join(" ", _args));
+
+            _dataFile = _args[1];
+            BackupManager backupManager = ReadData(_dataFile);
+
+            backupManager.Backups.Remove(backupManager.Backups.FirstOrDefault(x => x.FilePath == _args[2]));
+            backupManager.CreateBackup(BackupType.Full);
+
+            new Cleaner(ref backupManager).Clean();
+            SaveData(_dataFile, ref backupManager);
+        }
+
+        private void AddFile()
+        {
+            if (_args.Length != 3)
+                throw new WrongArgumentFormat(string.Join(" ", _args));
+
+            _dataFile = _args[1];
+            BackupManager backupManager = ReadData(_dataFile);
+
+            if (!File.Exists(_args[2]))
+                throw new FileNotFoundException();
+
+            backupManager.Backups.Add(new Backup(_args[2], backupManager.StorageType));
+            backupManager.CreateBackup(BackupType.Full);
+
+            new Cleaner(ref backupManager).Clean();
+            SaveData(_dataFile, ref backupManager);
+        }
 
         private void SaveData(string dataFile, ref BackupManager backupManager)
         {

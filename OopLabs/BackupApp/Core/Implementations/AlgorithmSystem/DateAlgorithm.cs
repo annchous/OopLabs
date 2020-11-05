@@ -25,8 +25,8 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
 
             while (pointsToSave.FirstOrDefault() != null && Warning(pointsToSave.FirstOrDefault()) && unwantedPointsCount > 0)
             {
-                unwantedPointsCount--;
                 pointsToSave.Insert(0, backup.RestorePoints[unwantedPointsCount - 1]);
+                unwantedPointsCount--;
             }
 
             return unwantedPointsCount;

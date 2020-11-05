@@ -3,6 +3,7 @@ using System.IO;
 using BackupApp.Core.Implementations.BackupSystem;
 using BackupApp.Core.Implementations.ConsoleSystem;
 using BackupApp.Core.Implementations.RestorePointSystem;
+using BackupApp.Exceptions;
 
 namespace BackupApp.Core.Abstractions
 {
@@ -11,7 +12,7 @@ namespace BackupApp.Core.Abstractions
     {
         public AlgorithmType Type { get; }
 
-        public Algorithm(AlgorithmType algorithmType)
+        protected Algorithm(AlgorithmType algorithmType)
         {
             Type = algorithmType;
         }
@@ -35,6 +36,10 @@ namespace BackupApp.Core.Abstractions
                             if (Directory.Exists(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath)))
                                 Directory.Delete(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath), true);
                             break;
+                        case StorageType.Unknown:
+                            throw new WrongArgumentFormat(storageType.ToString());
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(storageType), storageType, null);
                     }
 
                 }
@@ -50,6 +55,10 @@ namespace BackupApp.Core.Abstractions
                             if (Directory.Exists(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath)))
                                 Directory.Delete(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath), true);
                             break;
+                        case StorageType.Unknown:
+                            throw new WrongArgumentFormat(storageType.ToString());
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(storageType), storageType, null);
                     }
                 }
             }

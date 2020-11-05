@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.BackupSystem;
 using BackupApp.Core.Implementations.ConsoleSystem;

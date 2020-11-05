@@ -12,7 +12,7 @@ namespace BackupApp.Core.Abstractions
         public string RestorePointPath { get; }
         public string BackupFilePath { get; }
 
-        public RestorePoint(DateTime date, long size, string restorePointPath, string backupFilePath)
+        protected RestorePoint(DateTime date, long size, string restorePointPath, string backupFilePath)
         {
             Date = date;
             Size = size;

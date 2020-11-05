@@ -5,6 +5,7 @@ using System.Linq;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.ConsoleSystem;
 using BackupApp.Core.Implementations.RestorePointSystem;
+using BackupApp.Exceptions;
 
 namespace BackupApp.Core.Implementations.BackupSystem
 {
@@ -42,7 +43,7 @@ namespace BackupApp.Core.Implementations.BackupSystem
                     CreateIncrementalBackup();
                     break;
                 case BackupType.Unknown:
-                    throw new ArgumentException();
+                    throw new WrongArgumentFormat(backupType.ToString());
                 default:
                     throw new ArgumentOutOfRangeException(nameof(backupType), backupType, null);
             }
@@ -71,7 +72,9 @@ namespace BackupApp.Core.Implementations.BackupSystem
                     );
                     break;
                 case StorageType.Unknown:
-                    throw new ArgumentException();
+                    throw new WrongArgumentFormat(StorageType.ToString());
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -98,7 +101,9 @@ namespace BackupApp.Core.Implementations.BackupSystem
                     );
                     break;
                 case StorageType.Unknown:
-                    throw new ArgumentException();
+                    throw new WrongArgumentFormat(StorageType.ToString());
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

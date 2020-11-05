@@ -11,6 +11,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
         CreateBackup,
         OpenBackup,
         DeleteBackup,
+        AddFile,
         Unknown
     }
 
@@ -52,6 +53,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                 "n" => ActionType.CreateBackup,
                 "e" => ActionType.OpenBackup,
                 "d" => ActionType.DeleteBackup,
+                "a" => ActionType.AddFile,
                 _ => ActionType.Unknown
             };
 

@@ -19,7 +19,7 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
 
         public override int Calculate(Backup backup)
         {
-            List<int> values = new List<int>();
+            var values = new List<int>();
             _algorithms.ForEach(x => values.Add(x.Calculate(backup)));
             return _combinationType switch
             {

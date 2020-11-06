@@ -27,5 +27,11 @@ namespace BackupApp.Core.Implementations.RestorePointSystem
 
             Console.WriteLine("Full restore point was created");
         }
+
+        public override void Delete()
+        {
+            if (Directory.Exists(RestorePointPath))
+                Directory.Delete(RestorePointPath, true);
+        }
     }
 }

@@ -37,10 +37,8 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                 case ActionType.AddFile:
                     AddFile();
                     break;
-                case ActionType.Unknown:
-                    throw new WrongArgumentFormat(_args[0]);
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new WrongArgumentFormat(_args[0]);
             }
         }
 
@@ -64,21 +62,13 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                 throw new FileAlreadyExists(_args[i]);
             _dataFile = _args[i++];
 
-            try
-            {
-                File.Create(_dataFile + ".dat").Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw;
-            }
+            if (File.Exists(_dataFile + ".dat"))
+                throw new FileAlreadyExists(_dataFile + ".dat");
+            File.Create(_dataFile + ".dat").Close();
 
             var algorithmType = ArgumentParser.ParseAlgorithmType(_args[i++]);
-            var backupManager = new BackupManager(fileList, storageType, algorithmType, commonFolder)
-            {
-                Algorithm = ArgumentParser.ParseAlgorithm(algorithmType, _args, i)
-            };
+            var backupManager = new BackupManager(fileList, storageType, algorithmType,
+                ArgumentParser.ParseAlgorithm(algorithmType, _args, i), commonFolder);
 
             backupManager.CreateBackup(BackupType.Full);
             new Cleaner(ref backupManager).Clean();
@@ -107,7 +97,6 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
             BackupManager backupManager = ReadData(_dataFile);
 
             backupManager.Backups.Remove(backupManager.Backups.FirstOrDefault(x => x.FilePath == _args[2]));
-            backupManager.CreateBackup(BackupType.Full);
 
             new Cleaner(ref backupManager).Clean();
             SaveData(_dataFile, ref backupManager);

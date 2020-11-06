@@ -21,5 +21,11 @@ namespace BackupApp.Core.Implementations.RestorePointSystem
 
             Console.WriteLine("Incremental restore point was created");
         }
+
+        public override void Delete()
+        {
+            if (File.Exists(RestorePointPath))
+                File.Delete(RestorePointPath);
+        }
     }
 }

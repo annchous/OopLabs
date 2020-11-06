@@ -12,27 +12,15 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
     {
         private readonly int _count;
 
-        public CountAlgorithm(int count) : base(AlgorithmType.Count)
+        public CountAlgorithm(int count)
         {
             _count = count;
         }
 
-        public override int Calculate(Backup backup)
-        {
-            var unwantedPointsCount = backup.RestorePoints.Count - _count > 0 
-                ? backup.RestorePoints.Count - _count 
+        protected override int UnwantedPointsCount(Backup backup) => backup.RestorePoints.Count - _count > 0
+                ? backup.RestorePoints.Count - _count
                 : 0;
-            var pointsToSave = new List<RestorePoint>();
-            var count = backup.RestorePoints.Count >= _count ? _count : 0;
-            pointsToSave.AddRange(backup.RestorePoints.GetRange(unwantedPointsCount, count));
 
-            while (pointsToSave.FirstOrDefault() != null && Warning(pointsToSave.FirstOrDefault()) && unwantedPointsCount > 0)
-            {
-                pointsToSave.Insert(0, backup.RestorePoints[unwantedPointsCount - 1]);
-                unwantedPointsCount--;
-            }
-
-            return unwantedPointsCount;
-        }
+        protected override int PointsToSaveCount(Backup backup) => backup.RestorePoints.Count >= _count ? _count : 0;
     }
 }

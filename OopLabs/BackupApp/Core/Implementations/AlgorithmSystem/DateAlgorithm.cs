@@ -11,25 +11,15 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
     class DateAlgorithm : Algorithm
     {
         private DateTime _date;
-        public DateAlgorithm(DateTime date) : base(AlgorithmType.Date)
+        public DateAlgorithm(DateTime date)
         {
             _date = date;
         }
 
-        public override int Calculate(Backup backup)
-        {
-            var unwantedPointsCount = backup.RestorePoints.Count(x => x.Date < _date);
-            var pointsToSave = new List<RestorePoint>();
-            var count = backup.RestorePoints.Count - unwantedPointsCount > 0 ? backup.RestorePoints.Count - unwantedPointsCount : 0;
-            pointsToSave.AddRange(backup.RestorePoints.GetRange(unwantedPointsCount, count));
+        protected override int UnwantedPointsCount(Backup backup) => backup.RestorePoints.Count(x => x.Date < _date);
 
-            while (pointsToSave.FirstOrDefault() != null && Warning(pointsToSave.FirstOrDefault()) && unwantedPointsCount > 0)
-            {
-                pointsToSave.Insert(0, backup.RestorePoints[unwantedPointsCount - 1]);
-                unwantedPointsCount--;
-            }
-
-            return unwantedPointsCount;
-        }
+        protected override int PointsToSaveCount(Backup backup) => backup.RestorePoints.Count - UnwantedPointsCount(backup) > 0 
+            ? backup.RestorePoints.Count - UnwantedPointsCount(backup) 
+            : 0;
     }
 }

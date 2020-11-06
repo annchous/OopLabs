@@ -18,14 +18,15 @@ namespace BackupApp.Core.Implementations.BackupSystem
         public string CommonFolder { get; }
         public Algorithm Algorithm { get; set; }
 
-        public BackupManager(List<string> filesList, StorageType storageType, AlgorithmType algorithmType, string commonFolder)
+        public BackupManager(List<string> filesList, StorageType storageType, AlgorithmType algorithmType, Algorithm algorithm, string commonFolder)
         {
             Backups = new List<Backup>();
             StorageType = storageType;
             AlgorithmType = algorithmType;
-            CommonFolder = !string.IsNullOrEmpty(commonFolder)
-                ? Directory.CreateDirectory(commonFolder).ToString()
-                : commonFolder;
+            Algorithm = algorithm;
+            CommonFolder = commonFolder;
+            if (!string.IsNullOrEmpty(commonFolder))
+                Directory.CreateDirectory(commonFolder);
             foreach (var file in filesList)
             {
                 Backups.Add(new Backup(file, storageType));
@@ -42,8 +43,6 @@ namespace BackupApp.Core.Implementations.BackupSystem
                 case BackupType.Incremental:
                     CreateIncrementalBackup();
                     break;
-                case BackupType.Unknown:
-                    throw new WrongArgumentFormat(backupType.ToString());
                 default:
                     throw new ArgumentOutOfRangeException(nameof(backupType), backupType, null);
             }
@@ -71,8 +70,6 @@ namespace BackupApp.Core.Implementations.BackupSystem
                             backup.FilePath))
                     );
                     break;
-                case StorageType.Unknown:
-                    throw new WrongArgumentFormat(StorageType.ToString());
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -100,8 +97,6 @@ namespace BackupApp.Core.Implementations.BackupSystem
                             backup.FilePath))
                     );
                     break;
-                case StorageType.Unknown:
-                    throw new WrongArgumentFormat(StorageType.ToString());
                 default:
                     throw new ArgumentOutOfRangeException();
             }

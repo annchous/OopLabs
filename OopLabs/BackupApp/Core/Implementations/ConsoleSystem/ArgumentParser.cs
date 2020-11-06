@@ -11,8 +11,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
         CreateBackup,
         OpenBackup,
         DeleteBackup,
-        AddFile,
-        Unknown
+        AddFile
     }
 
     public enum AlgorithmType
@@ -20,29 +19,25 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
         Count,
         Date,
         Size,
-        Hybrid,
-        Unknown
+        Hybrid
     }
 
     public enum StorageType
     {
         Separate,
-        Common,
-        Unknown
+        Common
     }
 
     public enum BackupType
     {
         Full,
-        Incremental,
-        Unknown
+        Incremental
     }
 
     public enum CombinationType
     {
         Max,
-        Min,
-        Unknown
+        Min
     }
 
     static class ArgumentParser
@@ -54,7 +49,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                 "e" => ActionType.OpenBackup,
                 "d" => ActionType.DeleteBackup,
                 "a" => ActionType.AddFile,
-                _ => ActionType.Unknown
+                _ => throw new WrongArgumentFormat(action)
             };
 
         public static AlgorithmType ParseAlgorithmType(string algorithm) =>
@@ -64,7 +59,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                 "date" => AlgorithmType.Date,
                 "size" => AlgorithmType.Size,
                 "hybrid" => AlgorithmType.Hybrid,
-                _ => AlgorithmType.Unknown
+                _ => throw new WrongArgumentFormat(algorithm)
             };
 
         public static BackupType ParseBackupType(string backupType) =>
@@ -72,7 +67,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
             {
                 "full" => BackupType.Full,
                 "incremental" => BackupType.Incremental,
-                _ => BackupType.Unknown
+                _ => throw new WrongArgumentFormat(backupType)
             };
 
         public static StorageType ParseStorageType(string storageType) =>
@@ -80,7 +75,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
             {
                 "sep" => StorageType.Separate,
                 "com" => StorageType.Common,
-                _ => StorageType.Unknown
+                _ => throw new WrongArgumentFormat(storageType)
             };
 
         private static CombinationType ParseCombinationType(string combinationType) =>
@@ -88,7 +83,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
             {
                 "max" => CombinationType.Max,
                 "min" => CombinationType.Min,
-                _ => CombinationType.Unknown
+                _ => throw new WrongArgumentFormat(combinationType)
             };
 
         public static Algorithm ParseAlgorithm(AlgorithmType algorithmType, string[] args, int index)
@@ -109,8 +104,6 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
                     else throw new ArgumentException();
                 case AlgorithmType.Hybrid:
                     return ParseHybridAlgorithm(args, ++index);
-                case AlgorithmType.Unknown:
-                    throw new WrongArgumentFormat(args[index]);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(algorithmType), algorithmType, null);
             }

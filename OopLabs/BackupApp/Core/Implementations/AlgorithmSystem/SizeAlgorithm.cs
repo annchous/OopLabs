@@ -11,36 +11,24 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
     class SizeAlgorithm : Algorithm
     {
         private readonly long _size;
-        public SizeAlgorithm(long size) : base(AlgorithmType.Size)
+        public SizeAlgorithm(long size)
         {
             _size = size;
         }
 
-        public override int Calculate(Backup backup)
-        {
-            var unwantedPointsCount = backup.RestorePoints.Count - PointsToSaveCount(backup) > 0 
-                    ? backup.RestorePoints.Count - PointsToSaveCount(backup) 
-                    : 0;
-            var pointsToSave = new List<RestorePoint>();
-            pointsToSave.AddRange(backup.RestorePoints.GetRange(unwantedPointsCount, PointsToSaveCount(backup)));
+        protected override int UnwantedPointsCount(Backup backup) => backup.RestorePoints.Count - PointsToSaveCount(backup) > 0
+            ? backup.RestorePoints.Count - PointsToSaveCount(backup)
+            : 0;
 
-            while (pointsToSave.FirstOrDefault() != null && Warning(pointsToSave.FirstOrDefault()) && unwantedPointsCount > 0)
-            {
-                pointsToSave.Insert(0, backup.RestorePoints[unwantedPointsCount - 1]);
-                unwantedPointsCount--;
-            }
-
-            return unwantedPointsCount;
-        }
-
-        private int PointsToSaveCount(Backup backup)
+        protected override int PointsToSaveCount(Backup backup)
         {
             long sum = 0;
             var count = 0;
             var reversedPointsList = backup.RestorePoints;
             reversedPointsList.Reverse();
-            foreach (var point in reversedPointsList.TakeWhile(point => sum + point.Size <= _size))
+            foreach (var point in reversedPointsList)
             {
+                if (sum + Math.Abs(point.Size) > _size) break;
                 sum += point.Size;
                 count++;
             }

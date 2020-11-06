@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.ConsoleSystem;
-using BackupApp.Core.Implementations.RestorePointSystem;
 
 namespace BackupApp.Core.Implementations.BackupSystem
 {
@@ -29,7 +28,6 @@ namespace BackupApp.Core.Implementations.BackupSystem
             RestorePointsCount = 0;
         }
 
-        public void CreateRestore(FullRestorePoint restorePoint) => RestorePoints.Add(restorePoint);
-        public void CreateRestore(IncrementalRestorePoint restorePoint) => RestorePoints.Add(restorePoint);
+        public void CreateRestore(RestorePoint restorePoint) => RestorePoints.Add(restorePoint);
     }
 }

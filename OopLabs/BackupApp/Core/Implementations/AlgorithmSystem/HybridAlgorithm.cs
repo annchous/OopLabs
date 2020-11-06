@@ -11,7 +11,7 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
     {
         private readonly List<Algorithm> _algorithms;
         private readonly CombinationType _combinationType;
-        public HybridAlgorithm(List<Algorithm> algorithms, CombinationType combinationType) : base(AlgorithmType.Hybrid)
+        public HybridAlgorithm(List<Algorithm> algorithms, CombinationType combinationType)
         {
             _algorithms = algorithms;
             _combinationType = combinationType;
@@ -25,9 +25,18 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
             {
                 CombinationType.Max => values.Max(),
                 CombinationType.Min => values.Min(),
-                CombinationType.Unknown => throw new ArgumentException(),
                 _ => 0
             };
+        }
+
+        protected override int UnwantedPointsCount(Backup backup)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override int PointsToSaveCount(Backup backup)
+        {
+            throw new NotImplementedException();
         }
     }
 }

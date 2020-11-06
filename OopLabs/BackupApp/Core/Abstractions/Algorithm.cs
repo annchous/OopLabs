@@ -1,73 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BackupApp.Core.Implementations.BackupSystem;
 using BackupApp.Core.Implementations.ConsoleSystem;
 using BackupApp.Core.Implementations.RestorePointSystem;
-using BackupApp.Exceptions;
 
 namespace BackupApp.Core.Abstractions
 {
     [Serializable]
     public abstract class Algorithm
     {
-        public AlgorithmType Type { get; }
-
-        protected Algorithm(AlgorithmType algorithmType)
+        public virtual int Calculate(Backup backup)
         {
-            Type = algorithmType;
+            var unwantedPointsCount = UnwantedPointsCount(backup);
+            var pointsToSave = new List<RestorePoint>();
+            pointsToSave.AddRange(backup.RestorePoints.GetRange(unwantedPointsCount, PointsToSaveCount(backup)));
+
+            while (pointsToSave.FirstOrDefault() != null && NeedMorePointsToSave(pointsToSave.FirstOrDefault()) && unwantedPointsCount > 0)
+            {
+                pointsToSave.Insert(0, backup.RestorePoints[unwantedPointsCount - 1]);
+                unwantedPointsCount--;
+            }
+
+            return unwantedPointsCount;
         }
-
-        public abstract int Calculate(Backup backup);
-
+        
         public void Clean(ref Backup backup, StorageType storageType)
         {
             var unwantedPointsCount = Calculate(backup);
             for (int i = 0; i < unwantedPointsCount; i++)
             {
-                if (backup.RestorePoints[i].GetType() == typeof(FullRestorePoint))
+                switch (storageType)
                 {
-                    switch (storageType)
-                    {
-                        case StorageType.Separate:
-                            if (Directory.Exists(backup.RestorePoints[i].RestorePointPath))
-                                Directory.Delete(backup.RestorePoints[i].RestorePointPath, true);
-                            break;
-                        case StorageType.Common:
-                            if (Directory.Exists(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath)))
-                                Directory.Delete(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath), true);
-                            break;
-                        case StorageType.Unknown:
-                            throw new WrongArgumentFormat(storageType.ToString());
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(storageType), storageType, null);
-                    }
-
-                }
-                else
-                {
-                    switch (storageType)
-                    {
-                        case StorageType.Separate:
-                            if (File.Exists(backup.RestorePoints[i].RestorePointPath))
-                                File.Delete(backup.RestorePoints[i].RestorePointPath);
-                            break;
-                        case StorageType.Common:
-                            if (Directory.Exists(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath)))
-                                Directory.Delete(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath), true);
-                            break;
-                        case StorageType.Unknown:
-                            throw new WrongArgumentFormat(storageType.ToString());
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(storageType), storageType, null);
-                    }
+                    case StorageType.Separate:
+                        backup.RestorePoints[i].Delete();
+                        break;
+                    case StorageType.Common:
+                        if (Directory.Exists(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath)))
+                            Directory.Delete(Path.GetDirectoryName(backup.RestorePoints[i].RestorePointPath), true);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(storageType), storageType, null);
                 }
             }
 
             backup.RestorePoints.RemoveRange(0, unwantedPointsCount);
         }
-        protected bool Warning(RestorePoint restorePoint)
+
+        protected abstract int UnwantedPointsCount(Backup backup);
+        protected abstract int PointsToSaveCount(Backup backup);
+        protected bool NeedMorePointsToSave(RestorePoint restorePoint)
         {
-            if (restorePoint.GetType() != typeof(IncrementalRestorePoint)) return false;
+            if (restorePoint is IncrementalRestorePoint) return false;
             Console.WriteLine("Warning: to implement the algorithm for cleaning restore points, you must store one more point.");
             return true;
         }

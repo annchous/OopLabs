@@ -20,5 +20,7 @@ namespace BackupApp.Core.Abstractions
             BackupFilePath = backupFilePath;
             FullSize = new FileInfo(BackupFilePath).Length;
         }
+
+        public abstract void Delete();
     }
 }

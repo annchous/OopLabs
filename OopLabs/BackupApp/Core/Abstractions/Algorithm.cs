@@ -26,7 +26,7 @@ namespace BackupApp.Core.Abstractions
             return unwantedPointsCount;
         }
         
-        public void Clean(ref Backup backup, StorageType storageType)
+        public void Clean(Backup backup, StorageType storageType)
         {
             var unwantedPointsCount = Calculate(backup);
             for (int i = 0; i < unwantedPointsCount; i++)
@@ -52,7 +52,7 @@ namespace BackupApp.Core.Abstractions
         protected abstract int PointsToSaveCount(Backup backup);
         protected bool NeedMorePointsToSave(RestorePoint restorePoint)
         {
-            if (restorePoint is IncrementalRestorePoint) return false;
+            if (restorePoint is FullRestorePoint) return false;
             Console.WriteLine("Warning: to implement the algorithm for cleaning restore points, you must store one more point.");
             return true;
         }

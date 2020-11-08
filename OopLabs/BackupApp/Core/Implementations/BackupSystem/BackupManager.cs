@@ -5,7 +5,6 @@ using System.Linq;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.ConsoleSystem;
 using BackupApp.Core.Implementations.RestorePointSystem;
-using BackupApp.Exceptions;
 
 namespace BackupApp.Core.Implementations.BackupSystem
 {

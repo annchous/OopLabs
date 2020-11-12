@@ -14,7 +14,7 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
             _date = date;
         }
 
-        protected override int UnwantedPointsCount(Backup backup) => backup.RestorePoints.Count(x => x.Date < _date);
+        protected override int UnwantedPointsCount(Backup backup) => backup.RestorePoints.Count(x => x.CreationTime < _date);
 
         protected override int PointsToSaveCount(Backup backup) => backup.RestorePoints.Count - UnwantedPointsCount(backup) > 0 
             ? backup.RestorePoints.Count - UnwantedPointsCount(backup) 

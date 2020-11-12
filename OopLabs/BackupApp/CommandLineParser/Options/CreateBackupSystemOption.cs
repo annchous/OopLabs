@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.AlgorithmSystem;
 using BackupApp.Core.Implementations.BackupSystem;
+using BackupApp.Core.Implementations.BackupSystem.StorageSystem;
+using BackupApp.Core.Implementations.Logger;
+using BackupApp.Exception;
 
-namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser.Options
+namespace BackupApp.CommandLineParser.Options
 {
-    class CreateBackupOption : Option, IParsable
+    class CreateBackupSystemOption : Option, IParsable
     {
-        public CreateBackupOption(IEnumerable<string> arguments) : base(arguments) { }
+        public CreateBackupSystemOption(IEnumerable<string> arguments) : base(arguments) {}
 
         public ParsedData Parse()
         {
+            CheckArguments(1);
             var storageType = ParseStorageType();
+            CheckArguments(storageType == StorageType.Common ? 7 : 6);
             var commonFolder = ParseCommonFolder(storageType);
             var fileList = ParseFilePaths();
             var dataFile = ParseDataFile();
@@ -20,12 +28,20 @@ namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser.Options
             var algorithm = ParseAlgorithm(algorithmType);
 
             enumerator.Dispose();
-            return new ParsedData(ActionType.CreateBackup, dataFile, new BackupManager(fileList, storageType, algorithmType, algorithm, commonFolder));
+            return new ParsedData(ActionType.CreateBackupSystem, dataFile, new BackupSystem(storageType, commonFolder, fileList, algorithm));
+        }
+
+        protected override void CheckArguments(int expected)
+        {
+            if (arguments.Count() >= expected) return;
+            var exception = new WrongArgumentAmountException(arguments.Count() + 1, expected + 1);
+            new BackupLogger().Error(exception.Message);
+            throw exception;
         }
 
         private StorageType ParseStorageType()
         {
-            var result = ArgumentParser.ParseStorageType(enumerator.Current);
+            var result = StaticParser.ParseStorageType(enumerator.Current);
             enumerator.MoveNext();
             return result;
         }
@@ -36,6 +52,8 @@ namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser.Options
                 ? enumerator.Current
                 : "";
             if (result != "") enumerator.MoveNext();
+            if (!Directory.Exists(result) && result != "")
+                throw new BackupApp.Exception.FileNotFoundException(result);
             return result;
         }
 
@@ -44,6 +62,8 @@ namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser.Options
             var result = new List<string>();
             while (enumerator.Current != "-df")
             {
+                //if (!File.Exists(enumerator.Current))
+                //    throw new BackupApp.Exception.FileNotFoundException(enumerator.Current);
                 result.Add(enumerator.Current);
                 enumerator.MoveNext();
             }
@@ -54,7 +74,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser.Options
 
         private AlgorithmType ParseAlgorithmType()
         {
-            var result = ArgumentParser.ParseAlgorithmType(enumerator.Current);
+            var result = StaticParser.ParseAlgorithmType(enumerator.Current);
             enumerator.MoveNext();
             return result;
         }
@@ -85,7 +105,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser.Options
 
         private HybridAlgorithm ParseHybridAlgorithm()
         {
-            var combinationType = ArgumentParser.ParseCombinationType(enumerator.Current);
+            var combinationType = StaticParser.ParseCombinationType(enumerator.Current);
             var algorithms = new List<Algorithm>();
             while (enumerator.MoveNext())
             {

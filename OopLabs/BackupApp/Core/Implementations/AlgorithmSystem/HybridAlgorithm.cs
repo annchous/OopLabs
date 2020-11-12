@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BackupApp.CommandLineParser;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.BackupSystem;
 using BackupApp.Core.Implementations.ConsoleSystem;
@@ -29,14 +30,7 @@ namespace BackupApp.Core.Implementations.AlgorithmSystem
             };
         }
 
-        protected override int UnwantedPointsCount(Backup backup)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override int PointsToSaveCount(Backup backup)
-        {
-            throw new NotImplementedException();
-        }
+        protected override int UnwantedPointsCount(Backup backup) { throw new NotImplementedException(); }
+        protected override int PointsToSaveCount(Backup backup) { throw new NotImplementedException(); }
     }
 }

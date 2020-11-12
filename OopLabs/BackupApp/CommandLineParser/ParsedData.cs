@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using BackupApp.Core.Implementations.BackupSystem;
 
-namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser
+namespace BackupApp.CommandLineParser
 {
     class ParsedData
     {
         public ActionType ActionType { get; }
-        public BackupManager BackupManager { get; }
+        public BackupSystem BackupSystem { get; }
+        public RestoreType RestoreType { get; }
         public string DataFile { get; }
-        public BackupType BackupType { get; }
         public string FilePath { get; }
 
         public ParsedData(ActionType actionType, string dataFile)
@@ -19,18 +19,18 @@ namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser
             DataFile = dataFile;
         }
 
-        public ParsedData(ActionType actionType, string dataFile, BackupType backupType)
+        public ParsedData(ActionType actionType, string dataFile, RestoreType restoreType)
         {
             ActionType = actionType;
             DataFile = dataFile;
-            BackupType = backupType;
+            RestoreType = restoreType;
         }
 
-        public ParsedData(ActionType actionType, string dataFile, BackupManager backupManager)
+        public ParsedData(ActionType actionType, string dataFile, BackupSystem backupSystem)
         {
             ActionType = actionType;
             DataFile = dataFile;
-            BackupManager = backupManager;
+            BackupSystem = backupSystem;
         }
 
         public ParsedData(ActionType actionType, string dataFile, string filePath)

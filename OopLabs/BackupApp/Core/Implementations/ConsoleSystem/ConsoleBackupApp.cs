@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using BackupApp.CommandLineParser;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.AlgorithmSystem;
 using BackupApp.Core.Implementations.BackupSystem;
-using BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser;
-using BackupApp.Exceptions;
+using BackupApp.Core.Implementations.BackupSystem.StorageSystem;
+using BackupApp.Core.Implementations.Logger;
+using BackupApp.Core.Implementations.RestorePointSystem.RestoreFactory;
+using BackupApp.Exception;
+using FileNotFoundException = System.IO.FileNotFoundException;
 
 namespace BackupApp.Core.Implementations.ConsoleSystem
 {
-    class ConsoleBackupApp : IApp
+    public class ConsoleBackupApp : IApp
     {
         private readonly List<string> _args;
         private readonly BinaryFormatter _formatter;
         private string _dataFile;
-        private BackupManager _backupManager;
+        private BackupSystem.BackupSystem _backupSystem;
 
         public ConsoleBackupApp(List<string> args)
         {
@@ -26,26 +30,26 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
 
         public void Run()
         {
-            var parsedData = new CommandLineParser.CommandLineParser(_args).Parse();
+            var parsedData = new Parser(_args).Parse();
             switch (parsedData.ActionType)
             {
-                case ActionType.CreateBackup:
-                    CreateBackup(parsedData); 
+                case ActionType.CreateBackupSystem:
+                    CreateBackup(parsedData);
                     break;
-                case ActionType.CreateRestorePoint:
+                case ActionType.CreateRestore:
                     CreateRestorePoint(parsedData);
                     break;
-                case ActionType.DeleteFile:
+                case ActionType.DeleteBackup:
                     DeleteFile(parsedData);
                     break;
-                case ActionType.AddFile:
+                case ActionType.AddBackup:
                     AddFile(parsedData);
                     break;
-                case ActionType.ConfigurationInfo:
+                case ActionType.Info:
                     ShowConfigurationInfo(parsedData);
                     break;
                 default:
-                    throw new WrongArgumentFormat(_args[0]);
+                    throw new ArgumentException(_args[0]);
             }
             SaveData(_dataFile);
         }
@@ -54,60 +58,67 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
         {
             _dataFile = parsedData.DataFile;
             if (File.Exists(_dataFile + ".dat"))
-                throw new FileAlreadyExists(_dataFile + ".dat");
+            {
+                var exception = new DataFileAlreadyExistsException(_dataFile + ".dat");
+                new BackupLogger().Error(exception.Message);
+                throw exception;
+            }
             File.Create(_dataFile + ".dat").Close();
 
-            _backupManager = parsedData.BackupManager;
-            _backupManager.CreateBackup(BackupType.Full);
-            new Cleaner(_backupManager).Clean();
+            _backupSystem = parsedData.BackupSystem;
+            _backupSystem.CreateRestore(new RestoreFactory(RestoreType.Full));
         }
 
         private void CreateRestorePoint(ParsedData parsedData)
         {
             _dataFile = parsedData.DataFile;
-            _backupManager = ReadData(_dataFile);
-            _backupManager.CreateBackup(parsedData.BackupType);
-            new Cleaner(_backupManager).Clean();
+            _backupSystem = ReadData(_dataFile);
+            _backupSystem.CreateRestore(new RestoreFactory(parsedData.RestoreType));
+            new Cleaner(_backupSystem).Clean();
         }
 
         private void DeleteFile(ParsedData parsedData)
         {
             _dataFile = parsedData.DataFile;
-            _backupManager = ReadData(_dataFile);
-            _backupManager.Backups.Remove(_backupManager.Backups.FirstOrDefault(x => x.FilePath == parsedData.FilePath));
+            _backupSystem = ReadData(_dataFile);
+            _backupSystem.Backups.Remove(_backupSystem.Backups
+                .FirstOrDefault(x => x.OriginalFilePath == parsedData.FilePath));
         }
 
         private void AddFile(ParsedData parsedData)
         {
             _dataFile = parsedData.DataFile;
-            _backupManager = ReadData(_dataFile);
-            _backupManager.Backups.Add(new Backup(parsedData.FilePath, _backupManager.StorageType));
+            _backupSystem = ReadData(_dataFile);
+            _backupSystem.Backups.Add(new Backup(
+                parsedData.FilePath, 
+                new StorageFolderFactory(_backupSystem.StorageType, parsedData.FilePath, _backupSystem.CommonFolder).GetFolder(), 
+                _backupSystem.StorageType));
         }
 
         private void ShowConfigurationInfo(ParsedData parsedData)
         {
             _dataFile = parsedData.DataFile;
-            _backupManager = ReadData(_dataFile);
+            _backupSystem = ReadData(_dataFile);
             Console.WriteLine();
-            Console.WriteLine($"Storage Type: {_backupManager.StorageType}");
-            Console.WriteLine($"Algorithm Type: {_backupManager.AlgorithmType}");
-            Console.WriteLine($"Files for backup amount: {_backupManager.Backups.Count}");
+            Console.WriteLine($"Storage Type: {_backupSystem.StorageType}");
+            Console.WriteLine($"Algorithm Type: {_backupSystem.Algorithm.GetType()}");
+            Console.WriteLine($"Files for backup amount: {_backupSystem.Backups.Count}");
             Console.WriteLine();
         }
 
         private void SaveData(string dataFile)
         {
             using var fs = new FileStream(dataFile + ".dat", FileMode.OpenOrCreate);
-            _formatter.Serialize(fs, _backupManager);
+            _formatter.Serialize(fs, _backupSystem);
         }
 
-        private BackupManager ReadData(string dataFile)
+        private BackupSystem.BackupSystem ReadData(string dataFile)
         {
             if (!File.Exists(dataFile + ".dat"))
                 throw new FileNotFoundException();
 
             using var fs = new FileStream(dataFile + ".dat", FileMode.OpenOrCreate);
-            return (BackupManager)_formatter.Deserialize(fs);
+            return (BackupSystem.BackupSystem)_formatter.Deserialize(fs);
         }
     }
 }

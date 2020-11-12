@@ -1,18 +1,17 @@
 ﻿using System;
 using BackupApp.Core.Abstractions;
-using BackupApp.Core.Implementations.BackupSystem;
 
 namespace BackupApp.Core.Implementations.AlgorithmSystem
 {
     class Cleaner : ICleanable
     {
-        private readonly BackupManager _backupManager;
+        private readonly BackupSystem.BackupSystem _backupSystem;
 
-        public Cleaner(BackupManager backupManager)
+        public Cleaner(BackupSystem.BackupSystem backupSystem)
         {
-            _backupManager = backupManager;
+            _backupSystem = backupSystem;
         }
 
-        public void Clean() =>_backupManager.Backups.ForEach(backup => _backupManager.Algorithm.Clean(backup, _backupManager.StorageType));
+        public void Clean() =>_backupSystem.Backups.ForEach(backup => _backupSystem.Algorithm.Clean(backup));
     }
 }

@@ -4,24 +4,21 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using BackupApp.Core.Abstractions;
-using BackupApp.Exceptions;
 
-namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser
+namespace BackupApp.CommandLineParser.Options
 {
-    class AddFileOption : Option, IParsable
+    class DeleteBackupOption : Option, IParsable
     {
-        public AddFileOption(IEnumerable<string> arguments) : base(arguments) {}
+        public DeleteBackupOption(IEnumerable<string> arguments) : base(arguments) {}
+
         public ParsedData Parse()
         {
-            if (arguments.Count() != 2)
-                throw new WrongArgumentFormat(string.Join(" ", arguments.ToString()));
-
+            CheckArguments(2);
             var dataFile = ParseDataFile();
             var filePath = ParseFilePath();
-
             enumerator.Dispose();
 
-            return new ParsedData(ActionType.DeleteFile, dataFile, filePath);
+            return new ParsedData(ActionType.DeleteBackup, dataFile, filePath);
         }
 
         private string ParseFilePath()
@@ -29,7 +26,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser
             var result = enumerator.Current;
             enumerator.MoveNext();
             if (!File.Exists(result))
-                throw new FileNotFoundException();
+                throw new BackupApp.Exception.FileNotFoundException(result);
             return result;
         }
     }

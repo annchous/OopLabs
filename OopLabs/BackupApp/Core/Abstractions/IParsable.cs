@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using BackupApp.Core.Implementations.BackupSystem;
-using BackupApp.Core.Implementations.ConsoleSystem.CommandLineParser;
+using BackupApp.CommandLineParser;
 
 namespace BackupApp.Core.Abstractions
 {

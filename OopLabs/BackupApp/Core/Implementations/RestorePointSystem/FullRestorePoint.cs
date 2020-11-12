@@ -2,36 +2,34 @@
 using System.Globalization;
 using System.IO;
 using BackupApp.Core.Abstractions;
+using BackupApp.Core.Implementations.Logger;
 
 namespace BackupApp.Core.Implementations.RestorePointSystem
 {
     [Serializable]
     public class FullRestorePoint : RestorePoint
     {
-        public string RestorePointFolder { get; }
-        public string RestorePointInfoFile { get; }
-        public string RestorePointFile { get; }
-        public FullRestorePoint(DateTime date, long size, string restorePointPath, string backupFilePath) 
-            : base(date, size, restorePointPath, backupFilePath)
+        public FullRestorePoint(string fullPath, string originalFilePath) 
+            : base(fullPath, originalFilePath)
         {
-            RestorePointFolder = Directory.CreateDirectory(restorePointPath).ToString();
-            RestorePointInfoFile = restorePointPath + "\\RestorePointInfo.txt";
-            File.Create(RestorePointInfoFile).Close();
-            File.WriteAllLines(RestorePointInfoFile, new []
-            {
-                Date.ToString(CultureInfo.CurrentCulture),
-                Size.ToString()
-            });
-            RestorePointFile = restorePointPath + "\\BackupFile.txt";
-            File.Copy(BackupFilePath, RestorePointFile);
-
-            Console.WriteLine("Full restore point was created");
+            Size = new FileInfo(originalFilePath).Length;
         }
 
-        public override void Delete()
+        public override long Size { get; }
+        public override void CreateRestore()
         {
-            if (Directory.Exists(RestorePointPath))
-                Directory.Delete(RestorePointPath, true);
+            File.Create(FullPath).Close();
+            File.WriteAllLines(FullPath, new []
+            {
+                "Full restore point\n",
+                CreationTime.ToString(CultureInfo.CurrentCulture),
+                Size.ToString(),
+                Name,
+                DirectoryName,
+                FullPath,
+                OriginalFilePath
+            });
+            new BackupLogger().Info($"Full restore point at path {FullPath} was created.");
         }
     }
 }

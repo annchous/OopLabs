@@ -4,8 +4,8 @@ using System.Text;
 
 namespace BackupApp.Core.Abstractions
 {
-    interface ICleanable
+    interface IFolder
     {
-        public void Clean();
+        public string GetFolder();
     }
 }

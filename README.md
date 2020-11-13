@@ -10,3 +10,4 @@
 * [Lab 1: INI file parser](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab1IniParser.md)
 * [Lab 2: Shop](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab2Shop.md)
 * [Lab 3: Racing Simulator](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab3RacingSimulator.md)
+* [Lab 4: Backup App](https://github.com/annchous/OopLabs/blob/lab4/Tasks/Lab4BackupApp.md)

@@ -5,7 +5,7 @@ using BackupApp.Core.Implementations.BackupSystem;
 
 namespace BackupApp.CommandLineParser
 {
-    class ParsedData
+    public class ParsedData
     {
         public ActionType ActionType { get; }
         public BackupSystem BackupSystem { get; }

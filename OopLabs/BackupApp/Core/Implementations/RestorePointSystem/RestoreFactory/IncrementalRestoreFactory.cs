@@ -4,7 +4,7 @@ using BackupApp.Core.Abstractions;
 
 namespace BackupApp.Core.Implementations.RestorePointSystem.RestoreFactory
 {
-    class IncrementalRestoreFactory : IRestorable
+    class IncrementalRestoreFactory : IRestoreable
     {
         public void CreateRestore(BackupSystem.BackupSystem backupSystem)
         {

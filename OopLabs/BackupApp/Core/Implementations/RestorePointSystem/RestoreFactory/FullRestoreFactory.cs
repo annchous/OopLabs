@@ -1,10 +1,9 @@
 ﻿using System;
 using BackupApp.Core.Abstractions;
-using BackupApp.Core.Implementations.BackupSystem;
 
 namespace BackupApp.Core.Implementations.RestorePointSystem.RestoreFactory
 {
-    class FullRestoreFactory : IRestorable
+    class FullRestoreFactory : IRestoreable
     {
         public void CreateRestore(BackupSystem.BackupSystem backupSystem)
         {

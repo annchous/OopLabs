@@ -4,7 +4,7 @@ using BackupApp.Core.Abstractions;
 
 namespace BackupApp.Core.Implementations.RestorePointSystem.RestoreFactory
 {
-    public class RestoreFactory : IRestorable
+    public class RestoreFactory : IRestoreable
     {
         private readonly RestoreType _restoreType;
 

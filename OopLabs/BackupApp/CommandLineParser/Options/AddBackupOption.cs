@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using BackupApp.Core.Abstractions;
-using BackupApp.Core.Implementations.Logger;
-using BackupApp.Exception;
 
 namespace BackupApp.CommandLineParser.Options
 {
-    class AddBackupOption : Option, IParsable
+    class AddBackupOption : Option, IParseable
     {
         public AddBackupOption(IEnumerable<string> arguments) : base(arguments) {}
 

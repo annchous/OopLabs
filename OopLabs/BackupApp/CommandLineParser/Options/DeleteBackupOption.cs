@@ -7,7 +7,7 @@ using BackupApp.Core.Abstractions;
 
 namespace BackupApp.CommandLineParser.Options
 {
-    class DeleteBackupOption : Option, IParsable
+    class DeleteBackupOption : Option, IParseable
     {
         public DeleteBackupOption(IEnumerable<string> arguments) : base(arguments) {}
 

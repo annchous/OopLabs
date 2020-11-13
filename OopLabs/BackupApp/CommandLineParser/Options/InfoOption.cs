@@ -5,7 +5,7 @@ using BackupApp.Core.Abstractions;
 
 namespace BackupApp.CommandLineParser.Options
 {
-    class InfoOption : Option, IParsable
+    class InfoOption : Option, IParseable
     {
         public InfoOption(IEnumerable<string> arguments) : base(arguments) {}
 

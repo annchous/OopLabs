@@ -10,7 +10,7 @@ using BackupApp.Exception;
 
 namespace BackupApp.CommandLineParser.Options
 {
-    class CreateBackupSystemOption : Option, IParsable
+    class CreateBackupSystemOption : Option, IParseable
     {
         public CreateBackupSystemOption(IEnumerable<string> arguments) : base(arguments) {}
 

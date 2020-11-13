@@ -31,8 +31,6 @@ namespace BackupApp.CommandLineParser.Options
         {
             var result = enumerator.Current;
             enumerator.MoveNext();
-            //if (!File.Exists(result + ".dat"))
-            //    throw new DataFileNotFoundException(result + ".dat");
             return result;
         }
     }

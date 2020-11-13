@@ -6,7 +6,7 @@ using BackupApp.Core.Abstractions;
 
 namespace BackupApp.CommandLineParser.Options
 {
-    class CreateRestoreOption : Option, IParsable
+    class CreateRestoreOption : Option, IParseable
     {
         public CreateRestoreOption(IEnumerable<string> arguments) : base(arguments) {}
 

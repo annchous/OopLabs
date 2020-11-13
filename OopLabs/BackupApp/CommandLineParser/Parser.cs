@@ -8,7 +8,7 @@ using BackupApp.Exception;
 
 namespace BackupApp.CommandLineParser
 {
-    class Parser : IParsable
+    class Parser : IParseable
     {
         private readonly IEnumerable<string> _arguments;
         public Parser(IEnumerable<string> arguments)
@@ -17,15 +17,9 @@ namespace BackupApp.CommandLineParser
         }
         public ParsedData Parse()
         {
-            return StaticParser.ParseAction(_arguments.ElementAt(0)) switch
-            {
-                ActionType.CreateBackupSystem => new CreateBackupSystemOption(_arguments.Skip(1)).Parse(),
-                ActionType.CreateRestore => new CreateRestoreOption(_arguments.Skip(1)).Parse(),
-                ActionType.DeleteBackup => new DeleteBackupOption(_arguments.Skip(1)).Parse(),
-                ActionType.AddBackup => new AddBackupOption(_arguments.Skip(1)).Parse(),
-                ActionType.Info => new InfoOption(_arguments.Skip(1)).Parse(),
-                _ => throw new UnknownArgumentException(_arguments.ElementAt(0))
-            };
+            var actionType = StaticParser.ParseAction(_arguments.ElementAt(0) 
+                                                      ?? throw new WrongArgumentAmountException(0, 1));
+            return actionType.ConvertToParseable(_arguments).Parse();
         }
     }
 }

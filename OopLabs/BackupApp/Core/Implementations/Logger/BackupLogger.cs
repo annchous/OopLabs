@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using BackupApp.Core.Abstractions;
 
 namespace BackupApp.Core.Implementations.Logger

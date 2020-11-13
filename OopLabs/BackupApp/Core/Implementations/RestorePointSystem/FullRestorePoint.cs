@@ -29,7 +29,7 @@ namespace BackupApp.Core.Implementations.RestorePointSystem
                 FullPath,
                 OriginalFilePath
             });
-            new BackupLogger().Info($"Full restore point at path {FullPath} was created.");
+            BackupLogger.GetInstance().Info($"Full restore point at path {FullPath} was created.");
         }
     }
 }

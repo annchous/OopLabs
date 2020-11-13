@@ -11,11 +11,9 @@ namespace BackupApp.Core.Implementations.BackupSystem.StorageSystem
         {
             _filePath = filePath;
         }
-        public string GetFolder()
-        {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) 
-                       + "\\" + Path.GetFileName(_filePath) + "_Backup";
-            return Directory.CreateDirectory(path).ToString();
-        }
+
+        public string GetFolder() => Directory
+            .CreateDirectory(Path.GetDirectoryName(_filePath) + "\\" + Path.GetFileName(_filePath) + "_Backup")
+            .ToString();
     }
 }

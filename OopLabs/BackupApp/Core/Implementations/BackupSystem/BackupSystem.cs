@@ -26,7 +26,7 @@ namespace BackupApp.Core.Implementations.BackupSystem
             foreach (var file in fileList)
                 AddBackup(file, new StorageFolderFactory(storageType, file, commonFolder).GetFolder(), storageType);
             Algorithm = algorithm;
-            new BackupLogger().Info($"New backup system with {Backups.Count} backup(s) created.");
+            BackupLogger.GetInstance().Info($"New backup system with {Backups.Count} backup(s) created.");
         }
 
         public void CreateRestore(RestoreFactory restoreFactory) => restoreFactory.CreateRestore(this);
@@ -36,24 +36,24 @@ namespace BackupApp.Core.Implementations.BackupSystem
             var backup = Backups.FirstOrDefault(b => b.OriginalFilePath == filePath);
             if (backup is null)
             {
-                new BackupLogger().Error(
+                BackupLogger.GetInstance().Error(
                     $"Backup for the file {filePath} does not exist in the current backup system.");
                 return;
             }
             Backups.Remove(backup);
-            new BackupLogger().Info($"Backup for the file {filePath} was removed from the current backup system.");
+            BackupLogger.GetInstance().Info($"Backup for the file {filePath} was removed from the current backup system.");
         }
 
         public void AddBackup(string filePath, string backupPath, StorageType storageType)
         {
             if (!File.Exists(filePath))
             {
-                new BackupLogger().Error($"Cannot add backup for the file {filePath}." +
+                BackupLogger.GetInstance().Error($"Cannot add backup for the file {filePath}." +
                                          $" File {filePath} does not exist.");
                 return;
             }
             Backups.Add(new Backup(filePath, backupPath, storageType));
-            new BackupLogger().Info($"Backup for the file {filePath} was added to the current backup system.");
+            BackupLogger.GetInstance().Info($"Backup for the file {filePath} was added to the current backup system.");
         }
     }
 }

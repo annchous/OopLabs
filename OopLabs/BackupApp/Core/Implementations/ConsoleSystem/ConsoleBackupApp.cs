@@ -60,7 +60,7 @@ namespace BackupApp.Core.Implementations.ConsoleSystem
             if (File.Exists(_dataFile + ".dat"))
             {
                 var exception = new DataFileAlreadyExistsException(_dataFile + ".dat");
-                new BackupLogger().Error(exception.Message);
+                BackupLogger.GetInstance().Error(exception.Message);
                 throw exception;
             }
             File.Create(_dataFile + ".dat").Close();

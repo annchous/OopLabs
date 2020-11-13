@@ -34,9 +34,9 @@ namespace BackupApp.Core.Abstractions
             if (File.Exists(FullPath))
             {
                 File.Delete(FullPath);
-                new BackupLogger().Info($"Restore point at path {FullPath} was deleted.");
+                BackupLogger.GetInstance().Info($"Restore point at path {FullPath} was deleted.");
             }
-            else new BackupLogger().Error($"Restore point at path {FullPath} does not exist.");
+            else BackupLogger.GetInstance().Error($"Restore point at path {FullPath} does not exist.");
         }
     }
 }

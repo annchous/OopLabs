@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using BackupApp.Core.Abstractions;
 using BackupApp.Core.Implementations.AlgorithmSystem;
 using BackupApp.Core.Implementations.BackupSystem;
-using BackupApp.Core.Implementations.BackupSystem.StorageSystem;
 using BackupApp.Core.Implementations.Logger;
 using BackupApp.Exception;
 
@@ -35,7 +33,7 @@ namespace BackupApp.CommandLineParser.Options
         {
             if (arguments.Count() >= expected) return;
             var exception = new WrongArgumentAmountException(arguments.Count() + 1, expected + 1);
-            new BackupLogger().Error(exception.Message);
+            BackupLogger.GetInstance().Error(exception.Message);
             throw exception;
         }
 
@@ -62,8 +60,8 @@ namespace BackupApp.CommandLineParser.Options
             var result = new List<string>();
             while (enumerator.Current != "-df")
             {
-                //if (!File.Exists(enumerator.Current))
-                //    throw new BackupApp.Exception.FileNotFoundException(enumerator.Current);
+                if (!File.Exists(enumerator.Current))
+                    throw new BackupApp.Exception.FileNotFoundException(enumerator.Current);
                 result.Add(enumerator.Current);
                 enumerator.MoveNext();
             }

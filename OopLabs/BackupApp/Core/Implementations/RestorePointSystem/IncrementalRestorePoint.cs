@@ -29,7 +29,7 @@ namespace BackupApp.Core.Implementations.RestorePointSystem
                 FullPath,
                 OriginalFilePath
             });
-            new BackupLogger().Info($"Incremental restore point at path {FullPath} was created.");
+            BackupLogger.GetInstance().Info($"Incremental restore point at path {FullPath} was created.");
         }
     }
 }

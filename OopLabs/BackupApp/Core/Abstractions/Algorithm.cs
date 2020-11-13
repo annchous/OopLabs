@@ -40,7 +40,7 @@ namespace BackupApp.Core.Abstractions
         protected bool NeedMorePointsToSave(RestorePoint restorePoint)
         {
             if (restorePoint is FullRestorePoint) return false;
-            new BackupLogger().Warning("To implement the algorithm for cleaning restore points, you must store one more point.");
+            BackupLogger.GetInstance().Warning("To implement the algorithm for cleaning restore points, you must store one more point.");
             return true;
         }
 

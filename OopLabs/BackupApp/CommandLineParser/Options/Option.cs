@@ -23,7 +23,7 @@ namespace BackupApp.CommandLineParser.Options
         {
             if (arguments.Count() == expected) return;
             var exception = new WrongArgumentAmountException(arguments.Count() + 1, expected + 1);
-            new BackupLogger().Error(exception.Message);
+            BackupLogger.GetInstance().Error(exception.Message);
             throw exception;
         }
 

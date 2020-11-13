@@ -28,7 +28,7 @@ namespace BackupApp.Core.Implementations.BackupSystem
             RestorePoints = new List<RestorePoint>();
             StorageType = storageType;
             RestorePointsCount = 0;
-            new BackupLogger().Info($"New backup for the file {OriginalFilePath} at path {FullPath} was created.\n" +
+            BackupLogger.GetInstance().Info($"New backup for the file {OriginalFilePath} at path {FullPath} was created.\n" +
                                     $"Backup ID: {Id}.\nBackup storage type: {StorageType}.");
         }
 

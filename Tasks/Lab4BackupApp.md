@@ -12,21 +12,21 @@
 #### Create new backup
 
 ```
-"n" "file1_fullpath" "file2_fullpath" "|" "datafile" "count" "3"
-"n" "file1_fullpath" "file2_fullpath" "|" "datafile" "hybrid" "max" "count" "5" "date" "05.11.2020"
+-n -s file1_fullpath file2_fullpath -df datafile_name -c 3
+-n -c common_folder file1_fullpath file2_fullpath -df datafile -h -m -c 5 -d 05.11.2020
 ```
 
 #### Create restore point
 
 ```
-"e" "datafile" "full"
-"e" "datafile" "incremental"
+-r datafile -f
+-r datafile -i
 ```
 
 #### Add/Delete file from backup
 
 ```
-"a/d" "datafile" "fileToDeletePath"
+-a/-d datafile fileToDeletePath
 ```
 
 ### Condition

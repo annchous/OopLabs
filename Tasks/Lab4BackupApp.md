@@ -3,7 +3,7 @@
 
 ### [Solution](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupApp)
 
-### [Tests](https://github.com/annchous/OopLabs/tree/lab4/OopLabs/BackupAppTest)
+### [Tests](https://github.com/annchous/OopLabs/tree/master/OopLabs/BackupAppTest)
 
 ### [Code description](https://github.com/annchous/OopLabs/blob/lab4/Tasks/Lab4BackupApp.md#code-description)
 

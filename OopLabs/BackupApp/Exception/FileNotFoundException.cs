@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BackupApp.Exception
 {
-    class FileNotFoundException : System.Exception
+    public class FileNotFoundException : System.Exception
     {
         public FileNotFoundException(string filePath) : base($"File {filePath} was not found.") {}
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Banks.Model.Accounts;
-using Banks.Model.Transactions;
 
 namespace Banks.Model.Transactions
 {
@@ -29,13 +28,17 @@ namespace Banks.Model.Transactions
 
         public virtual void Withdraw(decimal sum)
         {
-            TransactionChain = new WithdrawTransaction(SourceAccount);
+            TransactionChain = 
+                    new DebitWithdraw(SourceAccount)
+                    .SetNext(new DepositWithdraw(SourceAccount))
+                    .SetNext(new CreditWithdraw(SourceAccount));
             TransactionChain.Withdraw(sum);
         }
 
         public virtual void Execute(decimal sum)
         {
-            TransactionChain = new DebitTransaction(SourceAccount, DestinationAccount)
+            TransactionChain = 
+                        new DebitTransaction(SourceAccount, DestinationAccount)
                         .SetNext(new DepositTransaction(SourceAccount, DestinationAccount))
                         .SetNext(new CreditTransaction(SourceAccount, DestinationAccount));
             TransactionChain.Execute(sum);

@@ -15,15 +15,5 @@ namespace Banks.Model.Accounts
         }
 
         public override double InterestOnBalance { get; } = 0;
-        public override void Put(decimal sum)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Withdraw(decimal sum)
-        {
-            if (Balance - sum < -Limit) throw new Exception("Превышен лимит");
-            Balance -= sum;
-        }
     }
 }

@@ -34,6 +34,9 @@ namespace Banks
 
             tinkoffBank.CancelTransaction(debit.Id, Guid.Empty);
             Console.WriteLine(debit.ToString());
+
+            tinkoffBank.Withdraw(debit.Id, 30000);
+            Console.WriteLine(debit.ToString());
         }
     }
 }

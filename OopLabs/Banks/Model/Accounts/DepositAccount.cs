@@ -17,17 +17,5 @@ namespace Banks.Model.Accounts
         {
             Time = time;
         }
-
-        public override void Put(decimal sum)
-        {
-            if (sum <= 0) throw new Exception("Счёт можно пополнить только на положительную сумму");
-            Balance += sum;
-        }
-
-        public override void Withdraw(decimal sum)
-        {
-            if (Time.Milliseconds > 0) throw new Exception("Срок депозита ещё не истёк");
-            Balance -= sum;
-        }
     }
 }

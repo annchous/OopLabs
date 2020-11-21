@@ -1,0 +1,21 @@
+﻿using System;
+using Banks.Model.Accounts;
+
+namespace Banks.Model.Transactions
+{
+    public class DebitWithdraw : Transaction
+    {
+        public DebitWithdraw(Account sourceAccount, Account destinationAccount = null) : base(sourceAccount, destinationAccount) {}
+
+        public override void Withdraw(decimal sum)
+        {
+            if (SourceAccount is DebitAccount debitAccount)
+            {
+                if (sum > debitAccount.Balance) throw new Exception("Недостаточно средств");
+                SourceAccount.CareTracker.Backup();
+                SourceAccount.Balance -= sum;
+            }
+            else TransactionChain?.Withdraw(sum);
+        }
+    }
+}

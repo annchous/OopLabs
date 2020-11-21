@@ -40,8 +40,5 @@ namespace Banks.Model.Accounts
                 .AppendLine($"Id: {Id}")
                 .AppendLine($"Balance: {Balance}")
                 .ToString();
-
-        public abstract void Put(decimal sum);
-        public abstract void Withdraw(decimal sum);
     }
 }

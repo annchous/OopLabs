@@ -19,10 +19,7 @@ namespace Banks.Model.Accounts
             CareTracker = new CareTracker(this);
         }
 
-        public IMemento Save()
-        {
-            return new BalanceMemento(this.Balance);
-        }
+        public IMemento Save() => new BalanceMemento(Balance);
 
         public void Restore(IMemento memento)
         {
@@ -30,8 +27,7 @@ namespace Banks.Model.Accounts
             {
                 throw new Exception("Unknown memento class " + memento.ToString());
             }
-
-            this.Balance = memento.GetState();
+            Balance = memento.GetState();
         }
 
         public override string ToString() => 

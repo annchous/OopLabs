@@ -9,9 +9,6 @@
             _balanceState = balanceState;
         }
 
-        public decimal GetState()
-        {
-            return this._balanceState;
-        }
+        public decimal GetState() => _balanceState;
     }
 }

@@ -12,31 +12,25 @@ namespace Banks.Model
 
         public CareTracker(Account account)
         {
-            this._account = account;
+            _account = account;
         }
 
-        public void Backup()
-        {
-            this._mementos.Add(this._account.Save());
-        }
+        public void Backup() => _mementos.Add(this._account.Save());
 
         public void Undo()
         {
-            if (this._mementos.Count == 0)
-            {
-                return;
-            }
+            if (_mementos.Count == 0) return;
 
-            var memento = this._mementos.Last();
-            this._mementos.Remove(memento);
+            var memento = _mementos.Last();
+            _mementos.Remove(memento);
 
             try
             {
-                this._account.Restore(memento);
+                _account.Restore(memento);
             }
             catch (Exception)
             {
-                this.Undo();
+                Undo();
             }
         }
     }

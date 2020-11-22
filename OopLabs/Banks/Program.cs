@@ -19,10 +19,10 @@ namespace Banks
             
             Bank tinkoffBank = new Bank("Tinkoff Bank");
             tinkoffBank.AddClient(client);
-            var debit = new DebitAccount(client, 15000, 15);
+            var debit = new DepositAccount(client, 15000, TimeSpan.Zero);
             tinkoffBank.AddAccountToClient(client, debit);
             tinkoffBank.AddClient(client1);
-            var debit1 = new DebitAccount(client1, 3000, 15);
+            var debit1 = new DebitAccount(client1, 5000, 2);
             tinkoffBank.AddAccountToClient(client1, debit1);
 
             tinkoffBank.Transfer(debit.Id, debit1.Id, 5000);

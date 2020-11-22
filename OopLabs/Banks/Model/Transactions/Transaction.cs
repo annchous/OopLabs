@@ -28,20 +28,20 @@ namespace Banks.Model.Transactions
 
         public virtual void Withdraw(decimal sum)
         {
-            TransactionChain = 
-                    new DebitWithdraw(SourceAccount)
-                    .SetNext(new DepositWithdraw(SourceAccount))
-                    .SetNext(new CreditWithdraw(SourceAccount));
+            TransactionChain = new DebitWithdraw(SourceAccount);
+            TransactionChain
+                .SetNext(new DepositWithdraw(SourceAccount))
+                .SetNext(new CreditWithdraw(SourceAccount));
             TransactionChain.Withdraw(sum);
         }
 
-        public virtual void Execute(decimal sum)
+        public virtual void Transfer(decimal sum)
         {
-            TransactionChain = 
-                        new DebitTransaction(SourceAccount, DestinationAccount)
-                        .SetNext(new DepositTransaction(SourceAccount, DestinationAccount))
-                        .SetNext(new CreditTransaction(SourceAccount, DestinationAccount));
-            TransactionChain.Execute(sum);
+            TransactionChain = new DebitTransfer(SourceAccount, DestinationAccount);
+            TransactionChain
+                .SetNext(new DepositTransfer(SourceAccount, DestinationAccount))
+                .SetNext(new CreditTransfer(SourceAccount, DestinationAccount));
+            TransactionChain.Transfer(sum);
         }
         
         public void Undo()

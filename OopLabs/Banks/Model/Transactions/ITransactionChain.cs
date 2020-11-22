@@ -5,7 +5,7 @@
         ITransactionChain SetNext(ITransactionChain transactionChain);
         public void Put(decimal sum);
         public void Withdraw(decimal sum);
-        public void Execute(decimal sum);
+        public void Transfer(decimal sum);
         public void Undo();
     }
 }

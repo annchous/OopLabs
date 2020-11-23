@@ -7,7 +7,6 @@ namespace Banks.Model.Transactions
     public class DebitTransfer : Transaction
     {
         public DebitTransfer(Account sourceAccount, Account destinationAccount) : base(sourceAccount, destinationAccount) {}
-
         public override void Transfer(decimal sum)
         {
             if (SourceAccount is DebitAccount debitAccount)

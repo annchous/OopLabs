@@ -7,7 +7,6 @@ namespace Banks.Model.Transactions
     public class CreditWithdraw : Transaction
     {
         public CreditWithdraw(Account sourceAccount, Account destinationAccount = null) : base(sourceAccount, destinationAccount) {}
-
         public override void Withdraw(decimal sum)
         {
             if (SourceAccount is CreditAccount creditAccount)

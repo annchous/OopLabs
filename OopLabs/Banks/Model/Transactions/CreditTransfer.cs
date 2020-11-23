@@ -7,7 +7,6 @@ namespace Banks.Model.Transactions
     public class CreditTransfer : Transaction
     {
         public CreditTransfer(Account sourceAccount, Account destinationAccount) : base(sourceAccount, destinationAccount) {}
-
         public override void Transfer(decimal sum)
         {
 

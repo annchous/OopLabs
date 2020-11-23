@@ -1,6 +1,8 @@
 ﻿using System;
 using Banks.Model;
 using Banks.Model.Accounts;
+using Banks.Model.Bank;
+using Banks.Model.Client;
 using NUnit.Framework;
 
 namespace BanksTest

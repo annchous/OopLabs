@@ -4,11 +4,12 @@ namespace Banks.Model.Accounts
 {
     public class DebitAccount : Account
     {
-        public DebitAccount(Client accountOwner, decimal balance, double interestOnBalance) : base(accountOwner, balance)
-        {
-            InterestOnBalance = interestOnBalance;
-        }
+        public DebitAccount(Client.Client accountOwner, decimal balance, double interestOnBalance) : base(accountOwner, balance, interestOnBalance) {}
 
-        public override double InterestOnBalance { get; }
+        public override double InterestOnBalance
+        {
+            get => _interestOnBalance;
+            set => _interestOnBalance = value;
+        }
     }
 }

@@ -3,6 +3,8 @@ using Banks.Model;
 using NUnit.Framework;
 using Banks.Model.Accounts;
 using Banks.Exceptions;
+using Banks.Model.Bank;
+using Banks.Model.Client;
 
 namespace BanksTest
 {

@@ -3,6 +3,8 @@ using System.Threading;
 using Banks.Exceptions;
 using Banks.Model;
 using Banks.Model.Accounts;
+using Banks.Model.Bank;
+using Banks.Model.Client;
 using NUnit.Framework;
 
 namespace BanksTest
@@ -45,7 +47,7 @@ namespace BanksTest
         [Test]
         public void WithdrawDeposit_Result()
         {
-            Thread.Sleep(5000);
+            _depositAccount.TermTimer.CurrentDate.Now = DateTime.Now.AddDays(1);
             _bank.Withdraw(_depositAccount.Id, 3000);
             Assert.AreEqual(2000, _depositAccount.Balance);
         }
@@ -60,7 +62,7 @@ namespace BanksTest
         public void WithdrawCredit_Result()
         {
             _bank.Withdraw(_creditAccount.Id, 3000);
-            Assert.AreEqual(-1000, _creditAccount.Balance);
+            Assert.AreEqual(-1002, _creditAccount.Balance);
         }
 
         [Test]

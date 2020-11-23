@@ -1,8 +1,8 @@
 ﻿using System;
 using Banks.Model;
 using Banks.Model.Accounts;
-using Banks.Model.Bank;
-using Banks.Model.Client;
+using Banks.Model.Banks;
+using Banks.Model.Clients;
 using NUnit.Framework;
 
 namespace BanksTest
@@ -17,7 +17,7 @@ namespace BanksTest
         public void Setup()
         {
             bank = new Bank("Tinkoff Bank");
-            client1 = Client.Builder("Fredi", "Kats").SetAddress("Лесной пр-кт, д. 9");
+            client1 = Client.Builder("Fredi", "Kats").SetAddress("Лесной пр-кт, д. 9").GetClient();
             debitAccount1 = new DebitAccount(client1, 10000, 2);
             bank.AddClient(client1);
             bank.AddAccountToClient(client1, debitAccount1);

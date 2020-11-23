@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Banks.Model.Accounts;
 
 namespace Banks.Model.Observer
 {
@@ -9,16 +10,16 @@ namespace Banks.Model.Observer
     {
         private Task _task;
         private decimal _sumPerMonth;
-        private readonly decimal _currentBalance;
+        private readonly Account _account;
         private readonly double _interestOnBalance;
         private readonly List<IObserver> _observers;
         private readonly CancellationTokenSource _cancelTokenSource;
         private readonly CancellationToken _token;
         public readonly DateTimeProvider CurrentDate = new DateTimeProvider();
 
-        public InterestTimer(ref decimal currentBalance, ref double interestOnBalance)
+        public InterestTimer(Account account, double interestOnBalance)
         {
-            _currentBalance = currentBalance;
+            _account = account;
             _interestOnBalance = interestOnBalance;
             _sumPerMonth = 0;
             _observers = new List<IObserver>();
@@ -36,7 +37,6 @@ namespace Banks.Model.Observer
         public void NotifyObservers() => _observers.ForEach(observer => observer.UpdateBalance(_sumPerMonth));
         public void UpdateBalance()
         {
-
             _task = new Task(delegate
             {
                 while (true)
@@ -46,7 +46,7 @@ namespace Banks.Model.Observer
                     while (i < 30)
                     {
                         if (DateTime.Now.AddDays(1) != CurrentDate.Now.AddDays(1)) continue;
-                        _sumPerMonth += _currentBalance * (decimal)(_interestOnBalance / 365) / 100;
+                        _sumPerMonth += _account.Balance * (decimal)(_interestOnBalance / 365) / 100;
                         CurrentDate.Now = DateTime.Now;
                         i++;
                     }

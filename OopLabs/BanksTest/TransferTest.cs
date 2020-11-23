@@ -3,8 +3,8 @@ using Banks.Model;
 using NUnit.Framework;
 using Banks.Model.Accounts;
 using Banks.Exceptions;
-using Banks.Model.Bank;
-using Banks.Model.Client;
+using Banks.Model.Banks;
+using Banks.Model.Clients;
 
 namespace BanksTest
 {
@@ -20,8 +20,8 @@ namespace BanksTest
         public void Setup()
         {
             _bank = new Bank("Tinkoff Bank");
-            _client1 = Client.Builder("Fredi", "Kats").SetAddress("Ћесной пр-кт, д. 9");
-            _client2 = Client.Builder("Vlad", "Kazanskiy").SetAddress("¬€земский переулок, 5-7").SetPassport("1234567890");
+            _client1 = Client.Builder("Fredi", "Kats").SetAddress("Ћесной пр-кт, д. 9").GetClient();
+            _client2 = Client.Builder("Vlad", "Kazanskiy").SetAddress("¬€земский переулок, 5-7").SetPassport("1234567890").GetClient();
             _debitAccount1 = new DebitAccount(_client1, 10000, 2);
             _debitAccount2 = new DebitAccount(_client2, 13000, 2);
             _bank.AddClient(_client1);

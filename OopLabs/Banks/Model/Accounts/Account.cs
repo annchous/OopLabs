@@ -31,9 +31,6 @@ namespace Banks.Model.Accounts
         public void ChargeDailyInterest(Int32 days, DateTime updateTime)
         {
             CurrentInterest += Balance * days * (Decimal)(InterestOnBalance / 365) / 100;
-            Console.WriteLine("Balance: " + Balance);
-            Console.WriteLine("Days: " + days);
-            Console.WriteLine("Percent: " + (Decimal)(InterestOnBalance / 365) / 100);
             LastInterestCharge = updateTime;
         }
 

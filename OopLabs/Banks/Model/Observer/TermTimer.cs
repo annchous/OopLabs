@@ -45,7 +45,7 @@ namespace Banks.Model.Observer
                 while (true)
                 {
                     if (_token.IsCancellationRequested) return;
-                    if ((CurrentDate.Date - _startDate.Date).Milliseconds < _totalTime.Milliseconds) continue;
+                    if ((CurrentDate - _startDate).Milliseconds < _totalTime.Milliseconds) continue;
                     break;
                 }
                 NotifyObservers();

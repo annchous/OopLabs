@@ -10,20 +10,14 @@ namespace Banks
     {
         static void Main(String[] args)
         {
-            var bank = new Bank("Tinkoff Bank");
-            var client = Client.Builder("Fredi", "Kats").SetAddress("Лесной пр-кт, д. 9").GetClient();
-            var debitAccount = new DebitAccount(client, 10000, 2);
-            bank.AddClient(client);
-            bank.AddAccountToClient(client, debitAccount);
+            var _bank = new Bank("Tinkoff Bank");
+            var _client = Client.Builder("Fredi", "Kats").SetAddress("Лесной пр-кт, д. 9").SetPassport("1234567890").GetClient();
+            var _creditAccount = new CreditAccount(_client, 2000, 4000, 2);
+            _bank.AddClient(_client);
+            _bank.AddAccountToClient(_client, _creditAccount);
 
-            Console.WriteLine(debitAccount.Balance);
-            bank.BankTime.CurrentDate = DateTime.Now.AddDays(1);
-            bank.Put(debitAccount.Id, 100);
-            Console.WriteLine(debitAccount.Balance);
-            bank.BankTime.CurrentDate = bank.BankTime.CurrentDate.AddDays(16);
-            bank.Put(debitAccount.Id, 100);
-            bank.UpdateAccountBalance();
-            Console.WriteLine(debitAccount.Balance);
+            _bank.Withdraw(_creditAccount.Id, 3000);
+            Console.WriteLine(_creditAccount.Balance);
         }
     }
 }

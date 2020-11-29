@@ -15,8 +15,12 @@ namespace Banks.Model.Accounts
             Fee = fee;
         }
 
-        public override Decimal Balance => balance < 0 
-            ? balance - (Decimal) (Fee / 1000) * Math.Abs(balance) 
-            : balance;
+        public override Decimal Balance 
+        {
+            get => balance < 0
+                ? balance - (Decimal) (Fee / 1000) * Math.Abs(balance)
+                : balance;
+            set => balance = value;
+        }
     }
 }

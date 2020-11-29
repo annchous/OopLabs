@@ -20,13 +20,13 @@ namespace Banks.Model.Transactions
             return transactionChain;
         }
 
-        public virtual void Put(decimal sum)
+        public virtual void Put(Decimal sum)
         {
             TransactionChain = new PutTransaction(SourceAccount);
             TransactionChain.Put(sum);
         }
 
-        public virtual void Withdraw(decimal sum)
+        public virtual void Withdraw(Decimal sum)
         {
             TransactionChain = new DebitWithdraw(SourceAccount);
             TransactionChain
@@ -35,7 +35,7 @@ namespace Banks.Model.Transactions
             TransactionChain.Withdraw(sum);
         }
 
-        public virtual void Transfer(decimal sum)
+        public virtual void Transfer(Decimal sum)
         {
             TransactionChain = new DebitTransfer(SourceAccount, DestinationAccount);
             TransactionChain

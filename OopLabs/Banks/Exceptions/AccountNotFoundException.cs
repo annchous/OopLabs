@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Banks.Exceptions
 {
-    class AccountNotFoundException : Exception
+    public class AccountNotFoundException : Exception
     {
-        public AccountNotFoundException(Guid accountId) : base($"Account with {accountId} ID was not found.") {}
+        public AccountNotFoundException(Guid accountId) : base($"Account with {accountId} ID was not found.") 
+        {}
     }
 }

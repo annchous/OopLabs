@@ -6,13 +6,17 @@ namespace Banks.Model.Transactions
 {
     public class CreditTransfer : Transaction
     {
-        public CreditTransfer(Account sourceAccount, Account destinationAccount) : base(sourceAccount, destinationAccount) {}
-        public override void Transfer(decimal sum)
+        public CreditTransfer(Account sourceAccount, Account destinationAccount) 
+            : base(sourceAccount, destinationAccount) 
+        {}
+
+        public override void Transfer(Decimal sum)
         {
 
             if (SourceAccount is CreditAccount creditAccount)
             {
-                if (creditAccount.Balance - sum < -creditAccount.Limit) throw new CreditLimitExceededException();
+                if (creditAccount.Balance - sum < -creditAccount.Limit) 
+                    throw new CreditLimitExceededException();
 
                 SourceAccount.CareTracker.Backup();
                 DestinationAccount.CareTracker.Backup();

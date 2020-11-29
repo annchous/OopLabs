@@ -9,27 +9,44 @@ namespace Banks.Model.Accounts
 {
     public abstract class Account
     {
-        protected Guid _id;
-        protected decimal _balance;
-        public Guid Id => _id;
-        public virtual decimal Balance
-        {
-            get => _balance;
-            set => _balance = value;
-        }
+        protected Decimal balance;
+        public Guid Id { get; }
         public Client AccountOwner { get; }
         public CareTracker CareTracker { get; }
-        public InterestTimer InterestTimer { get; protected set; }
+        public virtual Decimal Balance { get; set; }
+        public Decimal CurrentInterest { get; set; }
+        public DateTime LastInterestCharge { get; set; }
+        public virtual Double InterestOnBalance { get; }
 
-        protected Account(Client accountOwner, decimal balance)
+        protected Account(Client accountOwner, Decimal balance, Double interestOnBalance = 0)
         {
-            _id = Guid.NewGuid();
+            Id = Guid.NewGuid();
+            this.balance = balance;
             AccountOwner = accountOwner;
-            _balance = balance;
+            InterestOnBalance = interestOnBalance;
+            LastInterestCharge = DateTime.Now;
             CareTracker = new CareTracker(this);
         }
 
-        public IMemento Save() => new BalanceMemento(Balance);
+        public void ChargeDailyInterest(Int32 days, DateTime updateTime)
+        {
+            CurrentInterest += Balance * days * (Decimal)(InterestOnBalance / 365) / 100;
+            Console.WriteLine("Balance: " + Balance);
+            Console.WriteLine("Days: " + days);
+            Console.WriteLine("Percent: " + (Decimal)(InterestOnBalance / 365) / 100);
+            LastInterestCharge = updateTime;
+        }
+
+        public void UpdateBalance(Decimal sum)
+        {
+            Balance += sum;
+        }
+
+        public IMemento Save()
+        {
+            return new BalanceMemento(Balance);
+        }
+
         public void Restore(IMemento memento)
         {
             if (memento is not BalanceMemento)
@@ -37,8 +54,7 @@ namespace Banks.Model.Accounts
             Balance = memento.GetState();
         }
 
-        public override string ToString() => 
-            new StringBuilder()
+        public override String ToString() => new StringBuilder()
                 .AppendLine($"{this.GetType().Name}")
                 .AppendLine($"Id: {Id}")
                 .AppendLine($"Balance: {Balance}")

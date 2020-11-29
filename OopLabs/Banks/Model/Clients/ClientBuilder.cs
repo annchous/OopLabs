@@ -1,31 +1,33 @@
-﻿namespace Banks.Model.Clients
+﻿using System;
+
+namespace Banks.Model.Clients
 {
     public class ClientBuilder
     {
-        private string _name;
-        private string _surname;
-        private string _address;
-        private string _passport;
+        private String _name;
+        private String _surname;
+        private String _address;
+        private String _passport;
 
-        public ClientBuilder SetName(string name)
+        public ClientBuilder SetName(String name)
         {
             _name = name;
             return this;
         }
 
-        public ClientBuilder SetSurname(string surname)
+        public ClientBuilder SetSurname(String surname)
         {
             _surname = surname;
             return this;
         }
 
-        public ClientBuilder SetAddress(string address)
+        public ClientBuilder SetAddress(String address)
         {
             _address = address;
             return this;
         }
 
-        public ClientBuilder SetPassport(string passport)
+        public ClientBuilder SetPassport(String passport)
         {
             _passport = passport;
             return this;

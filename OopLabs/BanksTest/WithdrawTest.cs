@@ -47,7 +47,7 @@ namespace BanksTest
         [Test]
         public void WithdrawDeposit_Result()
         {
-            _depositAccount.TermTimer.CurrentDate.Now = DateTime.Now.AddDays(1);
+            _depositAccount.TermTimer.CurrentDate = DateTime.Now.AddDays(0);
             _bank.Withdraw(_depositAccount.Id, 3000);
             Assert.AreEqual(2000, _depositAccount.Balance);
         }

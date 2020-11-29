@@ -2,9 +2,8 @@
 
 namespace Banks.Model.Observer
 {
-    public interface IObserver
+    public interface ITermObserver
     {
-        public void UpdateBalance(decimal sum);
         public void UpdateTerm(TimeSpan term);
     }
 }

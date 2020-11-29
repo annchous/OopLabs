@@ -4,6 +4,7 @@ namespace Banks.Exceptions
 {
     public class UnknownMementoClassException : Exception
     {
-        public UnknownMementoClassException(string className) : base($"Unknown memento class {className}.") {}
+        public UnknownMementoClassException(String className) : base($"Unknown memento class {className}.") 
+        {}
     }
 }

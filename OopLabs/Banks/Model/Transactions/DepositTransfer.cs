@@ -6,13 +6,18 @@ namespace Banks.Model.Transactions
 {
     class DepositTransfer : Transaction
     {
-        public DepositTransfer(Account sourceAccount, Account destinationAccount) : base(sourceAccount, destinationAccount) {}
-        public override void Transfer(decimal sum)
+        public DepositTransfer(Account sourceAccount, Account destinationAccount) 
+            : base(sourceAccount, destinationAccount) 
+        {}
+
+        public override void Transfer(Decimal sum)
         {
             if (SourceAccount is DepositAccount depositAccount)
             {
-                if (depositAccount.Term.Milliseconds > 0) throw new DepositTermNotExpiredException();
-                if (sum > depositAccount.Balance) throw new InsufficientFundsException();
+                if (depositAccount.Term.Milliseconds > 0) 
+                    throw new DepositTermNotExpiredException();
+                if (sum > depositAccount.Balance) 
+                    throw new InsufficientFundsException();
 
                 SourceAccount.CareTracker.Backup();
                 DestinationAccount.CareTracker.Backup();

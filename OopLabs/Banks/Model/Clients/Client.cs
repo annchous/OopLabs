@@ -7,15 +7,15 @@ namespace Banks.Model.Clients
 {
     public class Client
     {
-        public readonly Guid Id;
-        public string Name { get; }
-        public string Surname { get; }
-        public string Address { get; }
-        public string Passport { get; }
+        public Guid Id { get; }
+        public String Name { get; }
+        public String Surname { get; }
+        public String Address { get; }
+        public String Passport { get; }
         public List<Account> Accounts { get; }
-        public bool Verified => !string.IsNullOrEmpty(Address) && !string.IsNullOrEmpty(Passport);
+        public Boolean Verified => !String.IsNullOrEmpty(Address) && !String.IsNullOrEmpty(Passport);
 
-        public Client(string name, string surname, string address, string passport)
+        public Client(String name, String surname, String address, String passport)
         {
             Id = Guid.NewGuid();
             Accounts = new List<Account>();
@@ -25,7 +25,7 @@ namespace Banks.Model.Clients
             Passport = passport;
         }
 
-        public override string ToString() =>
+        public override String ToString() =>
             new StringBuilder()
                 .AppendLine($"Name: {Name}")
                 .AppendLine($"Surname: {Surname}")
@@ -33,6 +33,7 @@ namespace Banks.Model.Clients
                 .AppendLine($"Passport: {Passport}")
                 .ToString();
         
-        public static ClientBuilder Builder(string name, string surname) => new ClientBuilder().SetName(name).SetSurname(surname);
+        public static ClientBuilder Builder(String name, String surname) => 
+            new ClientBuilder().SetName(name).SetSurname(surname);
     }
 }

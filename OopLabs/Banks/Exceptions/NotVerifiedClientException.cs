@@ -8,6 +8,7 @@ namespace Banks.Exceptions
 {
     public class NotVerifiedClientException : Exception
     {
-        public NotVerifiedClientException(Guid clientId) : base($"Client with {clientId} ID is not verified.") {}
+        public NotVerifiedClientException(Guid clientId) : base($"Client with {clientId} ID is not verified.") 
+        {}
     }
 }

@@ -6,12 +6,16 @@ namespace Banks.Model.Transactions
 {
     public class DebitTransfer : Transaction
     {
-        public DebitTransfer(Account sourceAccount, Account destinationAccount) : base(sourceAccount, destinationAccount) {}
-        public override void Transfer(decimal sum)
+        public DebitTransfer(Account sourceAccount, Account destinationAccount) 
+            : base(sourceAccount, destinationAccount) 
+        {}
+
+        public override void Transfer(Decimal sum)
         {
             if (SourceAccount is DebitAccount debitAccount)
             {
-                if (sum > debitAccount.Balance) throw new InsufficientFundsException();
+                if (sum > debitAccount.Balance) 
+                    throw new InsufficientFundsException();
 
                 SourceAccount.CareTracker.Backup();
                 DestinationAccount.CareTracker.Backup();

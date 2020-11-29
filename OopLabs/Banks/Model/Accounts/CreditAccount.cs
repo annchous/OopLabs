@@ -5,13 +5,18 @@ namespace Banks.Model.Accounts
 {
     public class CreditAccount : Account
     {
-        public decimal Limit { get; }
-        public double Fee { get; }
-        public CreditAccount(Client accountOwner, decimal balance, decimal limit, double fee) : base(accountOwner, balance)
+        public Double Fee { get; }
+        public Decimal Limit { get; }
+
+        public CreditAccount(Client accountOwner, Decimal balance, Decimal limit, Double fee) 
+            : base(accountOwner, balance)
         {
             Limit = limit;
             Fee = fee;
         }
-        public override decimal Balance => _balance < 0 ? _balance - (decimal) (Fee / 1000) * Math.Abs(_balance) : _balance;
+
+        public override Decimal Balance => balance < 0 
+            ? balance - (Decimal) (Fee / 1000) * Math.Abs(balance) 
+            : balance;
     }
 }

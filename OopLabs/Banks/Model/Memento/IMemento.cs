@@ -1,7 +1,9 @@
-﻿namespace Banks.Model.Memento
+﻿using System;
+
+namespace Banks.Model.Memento
 {
     public interface IMemento
     {
-        public decimal GetState();
+        public Decimal GetState();
     }
 }

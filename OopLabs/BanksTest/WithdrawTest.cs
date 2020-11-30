@@ -53,12 +53,6 @@ namespace BanksTest
         }
 
         [Test]
-        public void WithdrawDeposit_Exception()
-        {
-            Assert.Throws<DepositTermNotExpiredException>(() => _bank.Withdraw(_depositAccount.Id, 3000));
-        }
-
-        [Test]
         public void WithdrawCredit_Result()
         {
             _bank.Withdraw(_creditAccount.Id, 3000);

@@ -11,3 +11,4 @@
 * [Lab 2: Shop](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab2Shop.md)
 * [Lab 3: Racing Simulator](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab3RacingSimulator.md)
 * [Lab 4: Backup App](https://github.com/annchous/OopLabs/blob/lab4/Tasks/Lab4BackupApp.md)
+* [Lab 5: Banks](https://github.com/annchous/OopLabs/blob/master/Tasks/Lab5Banks.md)
